@@ -1,0 +1,56 @@
+/*样式重置*/
+body,div,p,ul,ol,li,dl,dt,dd,h1,h2,h3,h4,h5,h6,form,span,a,img{margin: 0;padding: 0;}
+a{text-decoration: none;}img{border: 0px;}li{list-style: none;}
+
+/**/
+.sidebar-nav{
+	width: 240px;
+	height: 1000px;
+	background: #303641;
+	float: left;
+}
+.top-nav li{
+	display: block;
+}
+.top-nav li a{
+	display: block;
+	position: relative;
+	font-family: '微软雅黑';
+	font-size: 16px;
+	color: #fff;
+	padding: 10px 20px;
+	border-top: #3e424b 1px solid;
+	border-bottom: #242933 1px solid;
+}
+.sub-nav{
+	display: none;
+}
+.sub-nav li a{
+	padding: 8px 0 8px 40px;
+	font-size: 14px;
+	color: #cfcfcf;
+}
+
+.top-nav li.open a{
+	background: #242933;
+	border-top: #242933;
+}
+.top-nav li.open ul{
+	display: block;
+}
+
+
+.top-nav li a i{
+	display: block;
+	width: 14px;
+	height: 14px;
+	position: absolute;
+	right: 
+	background: #fff;
+}
+.demo{
+	height: 1000px;
+	border-left: #2b313c 1px solid;
+	margin: 0 0 0 240px;
+	box-shadow: 4px 0 8px rgba(0,0,0,0.8); 
+}
