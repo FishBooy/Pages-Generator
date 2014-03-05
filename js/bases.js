@@ -3,13 +3,22 @@ var currentDocument = null;
 var timerSave = 1000;
 var stopsave = 0;
 var startdrag = 0;
-var demoHtml = $(".demo").html();
+var demoHtml = $('.demo').html();
 var currenteditor = null;
+function removeElm() {
+	$('.demo').on('click','.remove',function(e) {
+		e.preventDefault();
+		$(this).parent().remove();
+		if (!$('.demo .lyrow').length > 0) {
+			// clearDemo()
+		}
+	})
+}
 function initContainer(){
-	$(".demo, .demo .col").sortable({
-		connectWith: ".col",
+	$('.demo, .demo .col').sortable({
+		connectWith: '.col',
 		opacity: .5,
-		handle: ".drag",
+		handle: '.drag',
 		start: function(e,t) {
 			if (!startdrag) stopsave++;
 			startdrag = 1;
@@ -47,11 +56,11 @@ $(function(){
 
 	//右侧排序初始化
 	initContainer();
-	//左侧菜单"布局"拖拽
-	$(".sidebar-nav .lyrow").draggable({
-		connectToSortable: ".demo",
-		helper: "clone",
-		handle: ".drag",
+	//左侧菜单'布局'拖拽
+	$('.sidebar-nav .lyrow').draggable({
+		connectToSortable: '.demo',
+		helper: 'clone',
+		handle: '.drag',
 		opacity: .5,
 		start: function(e,t) {
 			if (!startdrag) stopsave++;
@@ -61,9 +70,9 @@ $(function(){
 			t.helper.width(400)
 		},
 		stop: function(e, t) {
-			$(".demo .column").sortable({
+			$('.demo .col').sortable({
 				opacity: .35,
-				connectWith: ".col",
+				connectWith: '.col',
 				start: function(e,t) {
 					if (!startdrag) stopsave++;
 					startdrag = 1;
@@ -77,11 +86,11 @@ $(function(){
 			startdrag = 0;
 		}
 	});
-	//左侧菜单"布局"拖拽
-	$(".sidebar-nav .box").draggable({
-		connectToSortable: ".col",
-		helper: "clone",
-		handle: ".drag",
+	//左侧菜单'布局'拖拽
+	$('.sidebar-nav .box').draggable({
+		connectToSortable: '.col',
+		helper: 'clone',
+		handle: '.drag',
 		opacity: .5,
 		// start: function(e,t) {
 		// 	if (!startdrag) stopsave++;
@@ -96,5 +105,6 @@ $(function(){
 		// 	startdrag = 0;
 		// }
 	});
+	removeElm();
 
 })
