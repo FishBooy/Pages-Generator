@@ -6,7 +6,7 @@ a{text-decoration: none;}img{border: 0px;}li{list-style: none;}
 .side-bar{
 	width: 240px;
 	height: 1000px;
-	background: #303641;
+	background: #31353c;
 	float: left;
 }
 .top-nav li{
@@ -25,41 +25,14 @@ a{text-decoration: none;}img{border: 0px;}li{list-style: none;}
 }
 .top-nav li .elements{background-position: 20px -42px;}
 .top-nav li .widgets{background-position: 20px -83px;}
-.top-nav li .sub-nav{display: none;}
-.sub-nav li span{
-	background-color: #242933;
-	display: block;
-	height: 34px;
-	line-height: 34px;
-	padding: 0 0 0 40px;
-	font-size: 14px;
-	font-family: '微软雅黑';
-	color: #cfcfcf;
-}
+/*.top-nav li .sub-nav{display: none;}*/
+
 .top-nav li.open a{
 	background-color: #242933;
 	border-top: #242933 1px solid;
 }
 .sub-nav li span{border-top: #363a43 1px solid;}
-.sub-nav li a.drag{
-	background: none;
-	border: 0px;
-	display: block;
-	background: #1a1e27;
-	font-size: 12px;
-	height: 34px;
-	width: 34px;
-	padding: 0;
-	border-left: #161921 1px solid;
-	text-indent: -999em;
-	line-height: 34px;
-	position: absolute;
-	right: 10px;
-	top: 1px;
-	right: 0;
-}
-.sub-nav li .view{display: none;}
-.ui-draggable-dragging li .view{ display:block;}
+
 
 /*============*/
 .doc-wrap{
@@ -72,10 +45,19 @@ a{text-decoration: none;}img{border: 0px;}li{list-style: none;}
 }
 .demo{min-height: 200px;padding: 20px;border: #ddd 1px solid;background: #f5f5f5 url(../img/demo_bg.gif);}
 /*布局*/
-.row .col{padding: 15px;border: #d0d0d0 1px solid;background: #fff;}
+.row .col{padding: 15px;border: #d0d0d0 1px solid;background: #fff;min-height: 30px;}
 
 .sub-nav .lyrow{position: relative;}
+.sub-nav .preview{background-color: #242933;display: block;height: 34px;line-height: 34px;padding: 0 0 0 40px;font-size: 14px;font-family: '微软雅黑';color: #cfcfcf;}
 .sub-nav .remove{display: none;}
+.sub-nav .drag{display: block;background: #1a1e27;font-size: 12px;color:#bbb;padding: 2px 5px;border: #161921 1px solid;position: absolute;right: 10px;top: 8px;cursor: pointer;}
+.sub-nav .view{display: none;}
+
+.ui-draggable-dragging{z-index: 999;padding:10px;border: #cacaca 1px solid;background: #dfdfdf;}
+.ui-draggable-dragging .preview{background: none;border: none;color: #000;padding-left: 0px;display: none;}
+.ui-draggable-dragging .remove{display: none;}
+.ui-draggable-dragging .drag{right: 13px;top: 13px;background: #555;border-color: #444;}
+.ui-draggable-dragging .view{ display:block;}
 
 .demo .lyrow{position: relative;margin: 0 auto 15px auto;}
 .demo .remove,.demo .drag{display:block;position: absolute;right: 19px;top:19px;background:#d56853;padding: 2px 5px;color: #f3f3f3;font-size: 12px;border: #cc523a 1px solid;}

@@ -8,7 +8,7 @@ var currenteditor = null;
 function initContainer(){
 	$(".demo, .demo .col").sortable({
 		connectWith: ".col",
-		opacity: .35,
+		opacity: .5,
 		handle: ".drag",
 		start: function(e,t) {
 			if (!startdrag) stopsave++;
@@ -24,26 +24,26 @@ $(function(){
 
 
 	//左侧菜单折叠
-	var topNav=$('.top-nav'),
-		subNav=$('.sub-nav');
+	// var topNav=$('.top-nav'),
+	// 	subNav=$('.sub-nav');
 
-	topNav.find('li').eq(0).addClass('open');
-	subNav.eq(0).slideDown();
+	// topNav.find('li').eq(0).addClass('open');
+	// subNav.eq(0).slideDown();
 
-	$('.top-nav>li>a').on('click',function(e){
-		e.preventDefault();
-		var preList=$('.sub-nav:visible'),
-			nextList=$(this).next();
-		if($(this).next().css('display')==='none'){
-			topNav.find('.open').removeClass('open');
-			preList.slideUp('nomal',function(){
-				preList.prev().removeClass('open')
-			});
-			$(this).parent().addClass('open').find('ul').slideDown()
-		}else{
-			return false;
-		};
-	});
+	// $('.top-nav>li>a').on('click',function(e){
+	// 	e.preventDefault();
+	// 	var preList=$('.sub-nav:visible'),
+	// 		nextList=$(this).next();
+	// 	if($(this).next().css('display')==='none'){
+	// 		topNav.find('.open').removeClass('open');
+	// 		preList.slideUp('nomal',function(){
+	// 			preList.prev().removeClass('open')
+	// 		});
+	// 		$(this).parent().addClass('open').find('ul').slideDown()
+	// 	}else{
+	// 		return false;
+	// 	};
+	// });
 
 	//右侧排序初始化
 	initContainer();
@@ -52,6 +52,7 @@ $(function(){
 		connectToSortable: ".demo",
 		helper: "clone",
 		handle: ".drag",
+		opacity: .5,
 		start: function(e,t) {
 			if (!startdrag) stopsave++;
 			startdrag = 1;
@@ -81,6 +82,7 @@ $(function(){
 		connectToSortable: ".col",
 		helper: "clone",
 		handle: ".drag",
+		opacity: .5,
 		// start: function(e,t) {
 		// 	if (!startdrag) stopsave++;
 		// 	startdrag = 1;
