@@ -7,6 +7,7 @@
 <link href="css/layout.css" rel="stylesheet">
 <script type="text/javascript" src="js/jquery-2.0.0.min.js"></script>
 <script type="text/javascript" src="js/jquery-ui.js"></script>
+<script type="text/javascript" src="js/bases.js"></script>
 
 <!-- <script type="text/javascript" src="js/jquery.htmlClean.js"></script>
 <script type="text/javascript" src="ckeditor/ckeditor.js"></script>
@@ -16,33 +17,60 @@
 
 <body>
 	<div class="layout-wrap">
-		<div class="sidebar-nav">
-			<ul class="top-nav">
-				<li>
-					<a href=""><i class=""></i><span>布局设置</span></a>
-					<ul class="sub-nav">
-						<li><a href=""><span>通栏</span></a></li>
-						<li><a href=""><span>两栏</span></a></li>
-					</ul>
-				</li>
-				<li class="open">
-					<a href=""><i class=""></i><span>基本元素</span></a>
-					<ul class="sub-nav">
-						<li><a href=""><span>段落</span></a></li>
-						<li><a href=""><span>列表</span></a></li>
-						<li><a href=""><span>图片</span></a></li>
-						<li><a href=""><span>其他</span></a></li>
-					</ul>
-				</li>
-				<li>
-					<a href=""><i class=""></i><span>交互组件</span></a>
-					<ul class="sub-nav">
-						<li><a href=""><span>其他</span></a></li>
-						<li><a href=""><span>幻灯</span></a></li>
-					</ul>
-				</li>
-			</ul>
+		<div class="side-bar">
+			<div class="logo">
+				<a href=""><img src="" alt=""></a>
+			</div>
+			<div class="sidebar-nav">
+				<ul class="top-nav">
+					<li>
+						<a href="" class="layout"><span>布局设置</span></a>
+						<ul class="sub-nav">
+							<li>
+								<div class="lyrow">
+									<span class="preview">两栏</span>
+									<a href="" class="remove">删除</a>
+									<a href="" class="drag">拖拽</a>
+									<div class="view">
+										<div class="row">
+											<div class="col span12"></div>
+										</div>
+									</div>
+								</div>
+							</li>
+						</ul>
+					</li>
+					<li>
+						<a href="" class="elements"><span>基本元素</span></a>
+						<ul class="sub-nav">
+							<li>
+								<div class="box">
+									<span>两栏</span>
+									<a href="" class="drag">拖拽</a>
+									<div class="view">
+										<ul>
+											<li>内容</li>
+											<li>内容</li>
+											<li>内容</li>
+										</ul>
+									</div>
+								</div>
+							</li>
+						</ul>
+					</li>
+					<li>
+						<a href="" class="widgets"><span>交互组件</span></a>
+						<ul class="sub-nav">
+							<li><span>其他</span></li>
+							<li><span>幻灯</span></li>
+						</ul>
+					</li>
+				</ul>
+			</div>
 		</div>
-		<div class="demo"></div>
+		<div class="doc-wrap">
+			<div class="demo">
+			</div>
+		</div>
 	</div>
 </body>
