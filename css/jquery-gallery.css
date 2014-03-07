@@ -1,0 +1,245 @@
+
+/*reset styles*/
+body,div,p,ul,ol,h2,a,span,img{
+	margin: 0;
+	padding: 0;
+}
+body{
+	background: #f5f5f5;
+}
+li{ list-style: none;}
+img{ border: none;}
+a{
+	text-decoration: none;
+}
+/*========gallery========*/
+
+.Gallery{
+	position: relative;
+	zoom: 1;
+}
+.Gallery .slide-wrap{
+	width: 100%;
+	overflow: hidden;
+}
+.Gallery li{
+	float: left;
+}
+.Gallery li a{ display: block;}
+.Gallery .imgs-container{
+	overflow: hidden;
+	zoom: 1;
+}
+.Gallery .shadow{
+	width: 100%;
+	position: absolute;
+	bottom: 0;
+	background: #000;
+	opacity: 0.4;
+	filter:alpha(opacity=40);
+}
+.Gallery .titles{
+	position: absolute;
+	bottom: 12px;
+	left: 10px;
+	overflow: hidden;
+}
+.Gallery .titles a
+{
+	color: #fff;
+	font-size: 14px;
+	text-decoration: none;
+	display: none;
+}
+.Gallery .titles a.curInfo{ 
+	display: inline;
+}
+.Gallery .buttons{
+	position: absolute;
+	bottom: 14px;
+	right: 8px;
+	zoom: 1;
+}
+.Gallery .buttons a{
+	display: block;
+	width: 10px;
+	height: 10px;
+	margin-right: 5px;
+	font-family: "微软雅黑",宋体, sans-serif;
+	font-size: 14px;
+	line-height: 14px;
+	/*font-weight: bold;*/
+	color: #916330;
+	text-indent:-10em;
+	text-align: center;
+	overflow:hidden;
+	background:#fafafa;
+
+}
+.Gallery .buttons a{
+	border-radius:50px;
+	-moz-box-shadow:1px 1px 1px #A9A9A9 inset;
+	-webkit-box-shadow:1px 1px 1px #A9A9A9 inset;
+	box-shadow:1px 1px 1px #A9A9A9 inset;
+}
+.Gallery .buttons a.on{
+	background-color: #b6d5e8;
+	-moz-box-shadow:1px 1px 1px #974b00 inset;
+	-webkit-box-shadow:1px 1px 1px #974b00 inset;
+	box-shadow:1px 1px 1px #974b00 inset;
+	background:#ff9626;
+}
+.Gallery .img-btns{
+	position: absolute;
+}
+.Gallery .img-btns a{
+	margin-right: 5px;
+	padding: 4px;
+}
+.Gallery .img-btns a.on{
+	background: #ff9626;
+}
+.Gallery .square a{
+	border-radius: 0px;
+	font-size: 12px;
+}
+.Gallery .hasTxt{
+	position: absolute;
+	bottom: 12px;
+	right: 10px;
+	zoom: 1;
+}
+.Gallery .hasTxt a{
+	text-indent: 0;
+	width: 14px;
+	height: 14px;
+	line-height: 14px;
+	color: #888;
+	box-shadow:none;
+	background: #fff;
+	-moz-box-shadow:0px 1px 2px #333;
+	-webkit-box-shadow:0px 1px 2px #333;
+	box-shadow:0px 1px 2px #333;
+}
+.Gallery .hasTxt a.on{
+	box-shadow: none;
+	color: #fff;
+}
+
+.Gallery .prev-btn,
+.Gallery .next-btn{
+	color: #fff;
+	font-size: 30px;
+	text-align: center;
+	font-weight: bold;
+	font-family: 宋体, sans-serif;
+	width: 36px;
+	height: 34px;
+	background: #000;
+	opacity: 0.4;
+	filter:alpha(opacity=40);
+	position: absolute;
+	z-index: 999;
+	display: none;
+}
+.Gallery a.prev-btn:hover,
+.Gallery a.next-btn:hover{
+	opacity: 0.9;
+	filter:alpha(opacity=80);
+	background: #ff9626;
+}
+.Gallery .prev-btn{
+	left: 0;
+	top: 38%;
+}
+.Gallery .next-btn{
+	right: 0;
+	top: 38%;
+}
+.Gallery .no-fade{
+	display: block;
+}
+.Gallery .arrows-out{
+	position: absolute;
+	top: -32px;
+	right: 0px;
+	height: 20px;
+	line-height: 20px;
+}
+.Gallery .arrows-out a{
+	border-radius: 25px;
+	width: 20px;
+	height: 20px;
+	line-height: 20px;
+	font-size: 14px;
+	display: block;
+	position: relative;
+	left: 0;
+	top: 0;
+	float: left;
+}
+.Gallery .arrows-out span{
+	display: block;
+	width: 20px;
+	height:22px;
+	font-size: 14px;
+	font-family: '微软雅黑';
+	color: #888;
+	float: left;
+}
+.Gallery .arrows-out span.curNum{
+	width: 14px;
+	color: #555;
+	text-align: right;
+}
+/*styles for demo
+*使用插件时,demo的html标签和样式都可以为去掉
+*/
+.wrapper{
+	width: 758px;
+	padding: 20px 0 0 20px;
+	border: #c0c0c0 1px solid;
+	background: #fff;
+	margin: 50px auto;
+	overflow: hidden;
+	zoom: 1;
+	/*box-shadow: 0px 3px 8px rgba(0,0,0,0.3);*/
+}
+.wrapper h1{
+	height: 30px;
+	line-height: 30px;
+	font-size: 24px;
+	text-align: center;
+	margin: 0;
+}
+.Demo01,.Demo04{
+	float: left;
+	padding: 8px;
+	border: #cfcfcf 1px solid;
+	width: 720px;
+	background: #fff;
+	margin: 20px auto;
+	box-shadow: 0px 2px 4px rgba(0,0,0,0.2);
+}
+
+.Demo02,.Demo03{
+	float: left;
+	padding: 0px 8px 8px 8px;
+	border: #cfcfcf 1px solid;
+	width: 340px;
+	background: #fff;
+	margin: 20px auto;
+	box-shadow: 0px 2px 4px rgba(0,0,0,0.2);
+}
+.Demo03{
+	padding-top: 10px;
+	margin: 52px 0 0 20px;
+}
+.Demo02 h2,.Demo03 h2{
+	height: 42px;
+	line-height: 42px;
+	font-size: 18px;
+	font-family: '微软雅黑';
+	font-weight: normal;
+	color: #333;
+}

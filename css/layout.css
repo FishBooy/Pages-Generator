@@ -1,12 +1,15 @@
 /*样式重置*/
 body,div,p,ul,ol,li,dl,dt,dd,h1,h2,h3,h4,h5,h6,form,span,a,img{margin: 0;padding: 0;}
 a{text-decoration: none;}img{border: 0px;}li{list-style: none;}
-
+body{background: #f1f1f1;}
 /*===========*/
 .side-bar{
-	width: 240px;
-	height: 1000px;
-	background: #31353c;
+	position: fixed;
+	left: 0;
+	top: 0;
+	width: 120px;
+	background: #303641;
+	border-right: #2b313c 1px solid;
 	float: left;
 }
 .top-nav li{
@@ -18,13 +21,13 @@ a{text-decoration: none;}img{border: 0px;}li{list-style: none;}
 	font-family: '微软雅黑';
 	font-size: 16px;
 	color: #fff;
-	padding: 10px 0 10px 40px;
+	padding: 10px 0 10px 20px;
 	border-top: #3e424b 1px solid;
 	border-bottom: #242933 1px solid;
-	background:url(../img/nav_icons.gif) 20px 0 no-repeat;
+	/*background:url(../img/nav_icons.gif) 3px 0 no-repeat;*/
 }
-.top-nav li .elements{background-position: 20px -42px;}
-.top-nav li .widgets{background-position: 20px -83px;}
+.top-nav li .elements{background-position: 3px -42px;}
+.top-nav li .widgets{background-position: 3px -83px;}
 /*.top-nav li .sub-nav{display: none;}*/
 
 .top-nav li.open a{
@@ -36,43 +39,53 @@ a{text-decoration: none;}img{border: 0px;}li{list-style: none;}
 
 /*============*/
 .doc-wrap{
-	height: 1000px;
 	padding: 20px;
 	background: #f1f1f1;
-	border-left: #2b313c 1px solid;
-	margin: 0 0 0 240px;
+	margin: 0 0 0 120px;
 	box-shadow: 0px 2 10px rgba(0,0,0,0.6); 
 }
 .demo{min-height: 200px;padding: 20px;border: #ddd 1px solid;background: #f5f5f5 url(../img/demo_bg.gif);}
-/*布局*/
-.row .col{padding: 26px 10px 0 10px;border: #d0d0d0 1px solid;background: #fff;min-height: 30px;}
+
+/*公共*/
+.row .col{padding: 5px 5px 0 5px;min-height: 30px;}
+.box h2{font-size: 20px;}
+.box ul li,.box p{line-height: 22px;font-size: 14px;color: #555;list-style: inside;}
 
 .sub-nav .lyrow{position: relative;}
-.sub-nav .preview{background-color: #242933;display: block;height: 34px;line-height: 34px;padding: 0 0 0 40px;font-size: 14px;font-family: '微软雅黑';color: #cfcfcf;}
+.sub-nav .box{position: relative;}
+.sub-nav .wdg{position: relative;}
+.sub-nav .preview{background-color: #2B303A;display: block;height: 34px;line-height: 34px;padding: 0 0 0 20px;font-size: 14px;font-family: '微软雅黑';color: #cfcfcf;}
 .sub-nav .remove{display: none;}
 .sub-nav .drag{display: block;background: #1a1e27;font-size: 12px;color:#bbb;padding: 2px 5px;border: #161921 1px solid;position: absolute;right: 6px;top: 8px;cursor: pointer;}
 .sub-nav .view{display: none;}
 
-.ui-draggable-dragging{z-index: 999;padding:5px;border: #cacaca 1px solid;background: #dfdfdf;}
+.sub-nav .view img{width: 400px;height: 200px;}
+.sub-nav .slider li a,.sub-nav .slider a{border: none;padding: 0;}
+
+.ui-draggable-dragging{z-index: 1000;padding:5px;border: #cacaca 1px solid;background: #dfdfdf;}
 .ui-draggable-dragging .lyrow,.ui-draggable-dragging .box{background: none;border: none;}
 .ui-draggable-dragging .preview{background: none;border: none;color: #000;padding-left: 0px;}
 .ui-draggable-dragging .remove{display: none;}
 .ui-draggable-dragging .drag{right: 8px;top: 8px;background: #555;border-color: #444;}
 .ui-draggable-dragging .view{ display:block;}
 
-.demo .lyrow{position: relative;margin: 0 auto 15px auto;}
-.demo .remove,.demo .drag{display:block;position: absolute;right: 19px;top:19px;background:#d56853;padding: 2px 5px;color: #f3f3f3;font-size: 12px;border: #cc523a 1px solid;cursor: pointer;}
-.demo .drag{right: 57px;background: #777;border-color: #666;}
+.demo .lyrow{position: relative;margin: 0 auto 15px auto;z-index: 999;border: #dadada 1px solid;background: #f5f5f5;}
+.demo .remove,.demo .drag{display: none;position: absolute;right: 3px;top:3px;background:#d56853;padding: 2px 5px;color: #f3f3f3;font-size: 12px;border: #cc523a 1px solid;cursor: pointer;}
+.demo .drag{right: 41px;background: #777;border-color: #666;display: none;}
 .demo .remove:hover{background: #d13b1e;color: #fff;border-color: #b62e14;}
 .demo .drag:hover{background: #555;color: #fff;border-color:#444; }
+.demo .btn{display: block;}
+.demo .lyrow .btn{z-index: 1000;}
+.demo .box .btn,.demo .wdg .btn{z-index: 999;}
 .demo .preview{display: none;}
-.demo .lyrow .view .row{padding: 15px;border: #cacaca 1px solid;background: #dfdfdf;}
+.demo .view img{width: 400px;height: 200px;}
+
+.demo .box,.demo .wdg{position: relative;margin-bottom: 5px;padding: 5px;border: #dfdfdf 1px solid;background: #fff;}
 .demo .ui-sortable-placeholder{ border: 1px dashed #c0c0c0;visibility: visible!Important;}
 
-
-.sub-nav .box{position: relative;}
-.demo .box{position: relative;margin-bottom: 10px;}
-.demo .box ul,.demo .box p{border: #dfdfdf 1px solid;padding: 10px;}
-.demo .box ul li,.demo .box p{line-height: 22px;font-size: 14px;color: #555;list-style: inside;}
 .demo .box .remove{right: 3px;top: 3px;}
 .demo .box .drag{right: 41px;top: 3px;}
+.demo .wdg .remove{right: 2px;top: 2px;}
+.demo .wdg .drag{right: 40px;top: 2px;}
+
+

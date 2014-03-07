@@ -31,7 +31,35 @@ function initContainer(){
 };
 $(function(){
 
+	//尺寸调整
+	var docWindow=$(window),
+		docWrap=$('.doc-wrap'),
+		sideBar=$('.side-bar'),
+		resizeTid=null;
+	function sizeInit(){
+		sideBar.css('height',docWindow.height());
+		// docWrap.css('height',docWindow.height()-parseInt(docWrap.css('paddingTop'))-parseInt(docWrap.css('paddingBottom')));
+		resizeTid=null;		
+	};
+	sizeInit();
+	docWindow.on('resize',function(){
+		resizeTid && clearTimeout(resizeTid);
+		resizeTid=setTimeout(sizeInit,20);
+	});
 
+	//右侧box lyrow wdg事件绑定
+	var selector='.lyrow,.box,.wdg';
+	$('.demo')
+		.on('mouseover',selector,function(e){
+			e.stopPropagation();
+			$(this).children('.remove,.drag').addClass('btn');
+		})
+		.on('mouseleave',selector,function(){
+			$(this).children('.remove,.drag').removeClass('btn');
+		})
+		.on('mouseout',selector,function(){
+			$(this).children('.remove,.drag').removeClass('btn');
+		})
 	//左侧菜单折叠
 	// var topNav=$('.top-nav'),
 	// 	subNav=$('.sub-nav');
@@ -105,6 +133,40 @@ $(function(){
 		// 	startdrag = 0;
 		// }
 	});
+	//左侧'组件'拖拽
+	$('.sidebar-nav .wdg').draggable({
+		connectToSortable: '.col',
+		helper: 'clone',
+		handle: '.drag',
+		opacity: .5,
+		// start: function(e,t) {
+		// 	if (!startdrag) stopsave++;
+		// 	startdrag = 1;
+		// },
+		drag: function(e, t) {
+			t.helper.width(400)
+		},
+		stop: function() {
+			// handleJsIds();
+			// if(stopsave>0) stopsave--;
+			// startdrag = 0;
+			//幻灯初始化
+			$('.demo .slider').gallery({
+				width:720,
+				height:360
+			});
+		}
+	});
 	removeElm();
+
+
+
+
+
+
+		$('.slider').gallery({
+			width:400,
+			height:200
+		});
 
 })
