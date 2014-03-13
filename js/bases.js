@@ -8,7 +8,7 @@ var currenteditor = null;
 function removeElm() {
 	$('.demo').on('click','.remove',function(e) {
 		e.preventDefault();
-		$(this).parent().remove();
+		$(this).parent().parent().remove();
 		if (!$('.demo .lyrow').length > 0) {
 			// clearDemo()
 		}
@@ -52,35 +52,24 @@ $(function(){
 	$('.demo')
 		.on('mouseover',selector,function(e){
 			e.stopPropagation();
-			$(this).children('.remove,.drag').addClass('btn');
+			$(this).children('.ctrl-btns').addClass('show');
 		})
 		.on('mouseleave',selector,function(){
-			$(this).children('.remove,.drag').removeClass('btn');
+			$(this).children('.ctrl-btns').removeClass('show');
 		})
 		.on('mouseout',selector,function(){
-			$(this).children('.remove,.drag').removeClass('btn');
+			$(this).children('.ctrl-btns').removeClass('show');
 		})
 	//左侧菜单折叠
-	// var topNav=$('.top-nav'),
-	// 	subNav=$('.sub-nav');
+	var topNav=$('.top-nav'),
+		subNav=$('.sub-nav');
 
-	// topNav.find('li').eq(0).addClass('open');
-	// subNav.eq(0).slideDown();
-
-	// $('.top-nav>li>a').on('click',function(e){
-	// 	e.preventDefault();
-	// 	var preList=$('.sub-nav:visible'),
-	// 		nextList=$(this).next();
-	// 	if($(this).next().css('display')==='none'){
-	// 		topNav.find('.open').removeClass('open');
-	// 		preList.slideUp('nomal',function(){
-	// 			preList.prev().removeClass('open')
-	// 		});
-	// 		$(this).parent().addClass('open').find('ul').slideDown()
-	// 	}else{
-	// 		return false;
-	// 	};
-	// });
+	$('.top-nav>li>a').on('click',function(e){
+		e.preventDefault();
+		e.stopPropagation()
+		var menuList=$(this).next();
+		if(menuList.css('display')=='block'){menuList.hide()}else{menuList.show()}
+	});
 
 	//右侧排序初始化
 	initContainer();
@@ -110,6 +99,7 @@ $(function(){
 					startdrag = 0;
 				}
 			});
+
 			if(stopsave>0) stopsave--;
 			startdrag = 0;
 		}
@@ -151,22 +141,21 @@ $(function(){
 			// if(stopsave>0) stopsave--;
 			// startdrag = 0;
 			//幻灯初始化
-			$('.demo .slider').gallery({
-				width:720,
+			$('.demo .slider').data('gallery',null).css('width','100%').gallery({
 				height:360
 			});
 		}
 	});
 	removeElm();
 
+$('.slider').gallery({height:200});
 
 
 
 
 
-		$('.slider').gallery({
-			width:400,
-			height:200
-		});
 
+$('body').on('click',function(){
+	$('.sub-nav').hide();
+})
 })

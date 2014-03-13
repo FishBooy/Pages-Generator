@@ -1,0 +1,12 @@
+/*样式重置*/
+body,div,p,ul,ol,li,dl,dt,dd,h1,h2,h3,h4,h5,h6,form,span,a,img{margin: 0;padding: 0;}
+a{text-decoration: none;}img{border: 0px;}li{list-style: none;}
+body{background: #f1f1f1;}
+
+/*默认样式*/
+h1{font-size: 28px;}
+h2{height: 36px;padding: 0 0 0 10px;overflow:hidden;font-size: 20px;font-weight:normal;line-height: 36px;color: #333;font-family: '微软雅黑';}
+p,li{line-height: 24px;font-size: 14px;color: #555;list-style: inside;}
+p{padding: 5px;text-indent: 2em;}
+ul{padding: 5px;}
+
