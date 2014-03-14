@@ -68,7 +68,15 @@ $(function(){
 		e.preventDefault();
 		e.stopPropagation()
 		var menuList=$(this).next();
-		if(menuList.css('display')=='block'){menuList.hide()}else{menuList.show()}
+		if(menuList.css('display')=='block'){
+			menuList.hide();
+			$(this).removeClass('open');
+		}else{
+			$('.sub-nav:visible').hide();
+			$('.top-nav .open').removeClass('open');
+			$(this).addClass('open');
+			menuList.show();
+		}
 	});
 
 	//右侧排序初始化
@@ -77,7 +85,6 @@ $(function(){
 	$('.sidebar-nav .lyrow').draggable({
 		connectToSortable: '.demo',
 		helper: 'clone',
-		handle: '.drag',
 		opacity: .5,
 		start: function(e,t) {
 			if (!startdrag) stopsave++;
@@ -104,11 +111,10 @@ $(function(){
 			startdrag = 0;
 		}
 	});
-	//左侧菜单'布局'拖拽
+	//左侧菜单'元素'拖拽
 	$('.sidebar-nav .box').draggable({
 		connectToSortable: '.col',
 		helper: 'clone',
-		handle: '.drag',
 		opacity: .5,
 		// start: function(e,t) {
 		// 	if (!startdrag) stopsave++;
@@ -127,7 +133,6 @@ $(function(){
 	$('.sidebar-nav .wdg').draggable({
 		connectToSortable: '.col',
 		helper: 'clone',
-		handle: '.drag',
 		opacity: .5,
 		// start: function(e,t) {
 		// 	if (!startdrag) stopsave++;
@@ -155,7 +160,7 @@ $('.slider').gallery({height:200});
 
 
 
-$('body').on('click',function(){
+$(window).on('click',function(){
 	$('.sub-nav').hide();
 })
 })
