@@ -86,7 +86,7 @@ $(function(){
 					startdrag = 1;
 				},
 				stop: function(e,t) {
-					alert('sort end')
+					// alert('sort end')
 					if(stopsave>0) stopsave--;
 					startdrag = 0;
 				}
@@ -94,7 +94,7 @@ $(function(){
 			
 			if(stopsave>0) stopsave--;
 			startdrag = 0;
-			console.log('drag end',stopsave,startdrag)
+			//console.log('drag end',stopsave,startdrag)
 		}
 	});
 	$('.sidebar-nav .box').draggable({
@@ -138,7 +138,7 @@ $(function(){
 
 	//右侧box lyrow wdg事件绑定
 	var selector='.lyrow,.box,.wdg';
-	$('.demo')
+	$('.edit .demo')
 		.on('mouseover',selector,function(e){
 			e.stopPropagation();
 			$(this).children('.ctrl-btns').addClass('show');
@@ -156,29 +156,22 @@ $(function(){
 
 	//顶部按钮单击事件绑定
 	var docWrap=$('#doc-wrap'),
-		topBtns=$('.top-btns'),
-		body=$('body');
-
-	$("#edit").click(function(e){
-		e.preventDefault();
-		topBtns.find('.active').removeClass('active');
-		$(this).addClass("active");
-		sideBar.animate({width:100},100,function(){
-			body.removeClass("source-preview");
-			body.addClass("edit");
-		});
-	});
-
-	$("#source-preview").click(function(e) {
-		e.preventDefault();
-		topBtns.find('.active').removeClass('active');
-		$(this).addClass("active");
-		sideBar.animate({width:0},100,function(){
-			body.removeClass("edit");
-			body.addClass("source-preview");
-		});
-		return false;
-	});
+		topBtns=$('.file-btns'),
+		body=$('body'),
+		cN={e:'edit',sp:'source-preview',ac:'active'};
+		function uiAlt(e){
+			var data=e.data,ac=cN.ac;
+			e.preventDefault();
+			topBtns.find('.active').removeClass(ac);
+			$(this).addClass(ac);
+			sideBar.animate({left:data.lv},100,function(){
+				body.removeClass(data.cN1);
+				body.addClass(data.cN2);
+			});
+			return false;		
+		};
+	$("#edit").on('click',{cN1:cN.sp,cN2:cN.e,lv:0},uiAlt);
+	$("#source-preview").on('click',{cN1:cN.e,cN2:cN.sp,lv:-100},uiAlt);
 
 
 })
