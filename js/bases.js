@@ -13,6 +13,10 @@ $(function(){
 		else
 			return false;		
 	};
+	function clearResizeHtml(){//填充之前清除之前resize时动态增加的html 避免重新初始化时冲突
+			$('.ui-resizable').removeClass('ui-resizable');
+			$('.ui-resizable-handle').remove();
+	};
 	function restoreData(){
 		if (supportstorage()) {
 			htmlData = JSON.parse(localStorage.getItem("htmlData"));
@@ -22,8 +26,10 @@ $(function(){
 			};
 			if(!htmlData.count){return false;}
 			demo.html(htmlData.step[htmlData.count]);
+			clearResizeHtml()
 		}
 	};
+
 	restoreData();
 
 	//尺寸调整
@@ -97,15 +103,40 @@ $(function(){
 			stop: function(e,t) {sort--;drag || htmlRec();}
 		});
 	};
-	function removeElm() {
-		$('.demo').on('click','.remove',function(e) {
-			e.preventDefault();
-			$(this).parent().parent().remove();
-			htmlRec(true);
+	function resizeInit(cols){
+		$.each(cols,function(k,v){
+			var next=$(v).next();
+			next.length && $(v).resizable({
+				handles:'e',
+				// start: function(e,ui){
+				// 	var ele=ui.element,
+				// 		eleW=parseInt(ele.css('width')),
+				// 		nextW=parseInt(next.css('width')),
+				// 		w=ele.parent().width();
+				// 		console.log(eleW,nextW,w);
+				// 		ele.css('width',eleW);
+				// 		next.css('width',nextW)
+				// },
+				resize: function(e,ui){
+					var size=ui.element.data('pre'),
+						pre=(!size)? ui.originalSize.width : size;
+						next.css('width',next.width()+pre-ui.size.width);
+				        ui.element.data('pre',ui.size.width);					
+				},
+				stop: function(e,ui){
+					var ele=ui.element,
+						percentInt=parseInt(ele.width()/ele.parent().width()*100),
+						nextPer=100-percentInt;
+					ele.css('width',percentInt+'%');
+					next.css('width',nextPer+'%');
+					htmlRec(true);
+				}
+			})
 		})
 	};
 	//排序初始化
 	initContainer();
+	resizeInit($('.col',demo));
 	//左侧拖拽&&右侧排序
 	$('.sidebar-nav .lyrow').draggable({
 		connectToSortable: '.demo',
@@ -116,12 +147,14 @@ $(function(){
 		stop: function(e, t) {
 			drag--;
 			htmlRec();
-			$('.demo .col').sortable({
+			var cols=$('.col',demo);
+			cols.sortable({
 				opacity: .35,
 				connectWith: '.col',
 				start: function(e,t) {(sort===0) && (sort++)},
 				stop: function(e,t) {sort--;drag || htmlRec(); }
 			});
+			resizeInit($('.demo .col'));
 		}
 	});
 	$('.sidebar-nav .box').draggable({
@@ -147,7 +180,11 @@ $(function(){
 		}
 	});
 	//按钮组件相关
-	removeElm();
+	demo.on('click','.remove',function(e) {
+		e.preventDefault();
+		$(this).parent().parent().remove();
+		htmlRec(true);
+	});
 	$('.edit .demo')
 		.on('mouseover',selector,function(e){
 			e.stopPropagation();
@@ -169,13 +206,15 @@ $(function(){
 	var topBtns=$('.file-btns'),
 		cN={e:'edit',sp:'source-preview',ac:'active'};
 	function uiAlt(e){
-		var data=e.data,ac=cN.ac;
+		var data=e.data,
+			ac=cN.ac,
+			x=(data.cN1===cN.sp)? 1:0;
 		e.preventDefault();
 		topBtns.find('.active').removeClass(ac);
 		$(this).addClass(ac);
-		sideBar.animate({left:data.lv},100,function(){
-			body.removeClass(data.cN1);
-			body.addClass(data.cN2);
+		x && body.removeClass(data.cN1).addClass(data.cN2);
+		sideBar.animate({left:data.lv},200,function(){
+			!x && body.removeClass(data.cN1).addClass(data.cN2);
 		});
 		return false;		
 	};
@@ -222,9 +261,9 @@ $(function(){
 		demo.empty();
 		htmlData={count:0,step:[demo.html()]}
 	});
-	// $('#download-source').on({'click'},{},);
 	$('#save').on('click',function(e){
 		e.preventDefault();
+		console.log($('.demo').html())
 		saveLayout();
 		alert('保存成功')
 	})

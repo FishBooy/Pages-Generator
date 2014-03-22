@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>jQuery UI Resizable - Default functionality</title>
+  <!-- <link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css"> -->
+<script type="text/javascript" src="../jquery-1.9.1.min.js"></script>
+<script type="text/javascript" src="js/jquery-ui.js"></script>
+  <!-- <link rel="stylesheet" href="/resources/demos/style.css"> -->
+  <style>
+  #resizable { width: 500px; height: 100px;background: red;position: relative; }
+  #box { width: 500px; height: 100px;background: green;position: relative; }
+  #resizable h3 { text-align: center; margin: 0; }
+.ui-resizable-handle {
+position: absolute;
+font-size: 0.1px;
+display: block;
+color: #222;}
+.ui-resizable-e {
+cursor: e-resize;
+width: 7px;
+right: -5px;
+top: 0;
+background: #222;
+height: 100%;color: #222;}
+  </style>
+  <script>
+  $(function() {
+    var preSize,box=$('#box');
+
+    $( "#resizable" ).resizable({
+		handles:'e',
+		resize: function(e,ui){
+      var pre=(!preSize)? ui.originalSize.width : preSize;
+          box.css('width',box.width()+pre-ui.size.width);
+          preSize=ui.size.width;
+
+  		}   	
+    });
+  });
+  </script>
+</head>
+<body>
+ 
+<div id="resizable" class="ui-widget-content">
+  <h3 class="ui-widget-header">Resizable</h3>
+</div>
+<div id="box" class="ui-widget-content">
+  <h3 class="ui-widget-header">Resizable</h3>
+</div>
+
+<div class="lyrow ui-draggable" style="display: block;">
+  <span class="preview">通栏</span>
+  <div class="ctrl-btns">
+    <span class="edit">编辑</span><span class="drag">拖拽</span><span class="remove">删除</span></div><div class="view"><div class="row"><div class="col"></div></div></div></div>","n","n<div class="lyrow ui-draggable" style="display: block;"><span class="preview">两栏</span><div class="ctrl-btns"><span class="edit">编辑</span><span class="drag">拖拽</span><span class="remove">删除</span></div><div class="view"><div class="row"><div class="col col-50"></div><div class="col col-50"></div></div></div></div>","n<div class="lyrow ui-draggable" style="display: block;"><span class="preview">两栏</span><div class="ctrl-btns show"><span class="edit">编辑</span><span class="drag">拖拽</span><span class="remove">删除</span></div><div class="view"><div class="row"><div class="col col-50 ui-sortable ui-resizable"></div><div class="col col-50 ui-sortable"><div class="ui-resizable-handle ui-resizable-e" style="z-index: 90; position: absolute; opacity: 1;"></div></div></div></div></div>
+
+</body>
+</html>
+
+
