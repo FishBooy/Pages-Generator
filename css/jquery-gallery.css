@@ -22,8 +22,11 @@ a{
 	width: 100%;
 	overflow: hidden;
 }
+.Gallery ul{padding: 0;}
 .Gallery li{
 	float: left;
+	line-height: auto;
+	list-style: none;
 }
 .Gallery li a{ display: block;}
 .Gallery .imgs-container{
@@ -40,9 +43,10 @@ a{
 }
 .Gallery .titles{
 	position: absolute;
-	bottom: 12px;
+	bottom: 10px;
 	left: 10px;
 	overflow: hidden;
+	padding: 0;
 }
 .Gallery .titles a
 {

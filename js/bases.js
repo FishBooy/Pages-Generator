@@ -6,7 +6,8 @@ $(function(){
 	**获取本地存储并填充
 	**
 	*/
-	var demo=$('.demo');
+	var demo=$('.demo'),
+		htmlData;
 	function supportstorage() {
 		if (typeof window.localStorage=='object') 
 			return true;
@@ -25,13 +26,13 @@ $(function(){
 				return false;
 			};
 			if(!htmlData.count){return false;}
+			console.log(htmlData);
 			demo.html(htmlData.step[htmlData.count]);
 			clearResizeHtml()
 		}
 	};
-
 	restoreData();
-
+	
 	//尺寸调整
 	var docWindow=$(window),
 		wrap=$('.doc-wrap'),
@@ -75,8 +76,6 @@ $(function(){
 		}
 	});
 
-
-
 	/*
 	**拖拽及排序:
 	**变量&&绑定&&初始化
@@ -100,13 +99,17 @@ $(function(){
 			opacity: .5,
 			handle: '.drag',
 			start: function(e,t) {(sort===0) && (sort++)},
-			stop: function(e,t) {sort--;drag || htmlRec();}
+			stop: function(e,t) {console.log('sortStop!!');sort--;drag || htmlRec();}
 		});
 	};
 	function resizeInit(cols){
 		$.each(cols,function(k,v){
+			console.log(k,$(v),$(v).data('resize'))
+			if($(v).data('resize')){console.log(k,$(v),$(v).data('resize'));return false;}
 			var next=$(v).next();
-			next.length && $(v).resizable({
+			next.length && alert('resize初始化!!')
+			next.length && $(v).data('resize',1) &&
+			$(v).resizable({
 				handles:'e',
 				// start: function(e,ui){
 				// 	var ele=ui.element,
@@ -118,6 +121,7 @@ $(function(){
 				// 		next.css('width',nextW)
 				// },
 				resize: function(e,ui){
+					console.log('resie....')
 					var size=ui.element.data('pre'),
 						pre=(!size)? ui.originalSize.width : size;
 						next.css('width',next.width()+pre-ui.size.width);
@@ -149,11 +153,12 @@ $(function(){
 			htmlRec();
 			var cols=$('.col',demo);
 			cols.sortable({
-				opacity: .35,
+				opacity: .5,
 				connectWith: '.col',
 				start: function(e,t) {(sort===0) && (sort++)},
-				stop: function(e,t) {sort--;drag || htmlRec(); }
+				stop: function(e,t) {console.log('sortStop2!!');sort--;drag || htmlRec(); }
 			});
+			console.log($('.demo .col').length)
 			resizeInit($('.demo .col'));
 		}
 	});
@@ -172,8 +177,10 @@ $(function(){
 		start: function(e,t) {drag++},
 		drag: function(e, t) {t.helper.width(400)},
 		stop: function() {
-			$('.demo .slider').data('gallery',null).css('width','100%').gallery({
-				height:360
+			$.each($('.demo .slider'),function(){
+				var h=$(this).parent().width()/2;
+				console.log(h);
+				$(this).gallery({height:h});
 			});
 			drag--;
 			htmlRec();
@@ -196,7 +203,6 @@ $(function(){
 		.on('mouseout',selector,function(){
 			$(this).children('.ctrl-btns').removeClass('show');
 		});
-	$('.slider').gallery({height:200});
 
 
 	/*
