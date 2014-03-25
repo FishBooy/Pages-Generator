@@ -26,7 +26,6 @@ $(function(){
 				return false;
 			};
 			if(!htmlData.count){return false;}
-			console.log(htmlData);
 			demo.html(htmlData.step[htmlData.count]);
 			clearResizeHtml()
 		}
@@ -99,29 +98,18 @@ $(function(){
 			opacity: .5,
 			handle: '.drag',
 			start: function(e,t) {(sort===0) && (sort++)},
-			stop: function(e,t) {console.log('sortStop!!');sort--;drag || htmlRec();}
+			stop: function(e,t) {sort--;drag || htmlRec();}
 		});
 	};
-	function resizeInit(cols){
-		$.each(cols,function(k,v){
-			console.log(k,$(v),$(v).data('resize'))
-			if($(v).data('resize')){console.log(k,$(v),$(v).data('resize'));return false;}
-			var next=$(v).next();
-			next.length && alert('resize初始化!!')
-			next.length && $(v).data('resize',1) &&
-			$(v).resizable({
+	function resize(e){
+		
+		var next=e.next();
+		if(next.length){
+			var maxW=e.width()+next.width()-50;
+			e.data('resize',1);
+			e.resizable({
 				handles:'e',
-				// start: function(e,ui){
-				// 	var ele=ui.element,
-				// 		eleW=parseInt(ele.css('width')),
-				// 		nextW=parseInt(next.css('width')),
-				// 		w=ele.parent().width();
-				// 		console.log(eleW,nextW,w);
-				// 		ele.css('width',eleW);
-				// 		next.css('width',nextW)
-				// },
 				resize: function(e,ui){
-					console.log('resie....')
 					var size=ui.element.data('pre'),
 						pre=(!size)? ui.originalSize.width : size;
 						next.css('width',next.width()+pre-ui.size.width);
@@ -129,13 +117,31 @@ $(function(){
 				},
 				stop: function(e,ui){
 					var ele=ui.element,
-						percentInt=parseInt(ele.width()/ele.parent().width()*100),
-						nextPer=100-percentInt;
+						percentInt=(ele.width()/ele.parent().width()*100).toFixed(1),
+						nextPer=(next.width()/ele.parent().width()*100).toFixed(1),
+						siblings=ele.siblings(),
+						arr=[ele];
 					ele.css('width',percentInt+'%');
 					next.css('width',nextPer+'%');
+					for(var i=0;i<siblings.length;i++){arr.push(siblings.eq(i))};
+					for(var j=0;j<arr.length;j++){
+						resize(arr[j]
+							.data('resize',undefined)
+							.data('pre',undefined)
+							.resizable('destroy'));
+					};
 					htmlRec(true);
-				}
+				},
+				maxWidth:maxW,
+				minWidth:50
 			})
+		}	
+	}
+	function resizeInit(cols){
+		$.each(cols,function(k,v){
+			if(!$(v).data('resize')){
+				resize($(v))
+			}
 		})
 	};
 	//排序初始化
@@ -155,11 +161,11 @@ $(function(){
 			cols.sortable({
 				opacity: .5,
 				connectWith: '.col',
+				handle:'drag',
 				start: function(e,t) {(sort===0) && (sort++)},
-				stop: function(e,t) {console.log('sortStop2!!');sort--;drag || htmlRec(); }
+				stop: function(e,t) {sort--;drag || htmlRec(); }
 			});
-			console.log($('.demo .col').length)
-			resizeInit($('.demo .col'));
+			resizeInit(cols);
 		}
 	});
 	$('.sidebar-nav .box').draggable({
@@ -234,7 +240,9 @@ $(function(){
 			if((id==='forward') && (data.count<(data.step.length-1))){data.count++}
 		};
 		$('.demo').html(data.step[data.count]);
-		initContainer();	
+
+		initContainer();
+		resizeInit($('.demo .col'));	
 	};
 	function saveLayout(){
 		var data = htmlData,

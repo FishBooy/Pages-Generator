@@ -21,6 +21,7 @@
 
 	<div class="wrap">
 		<div id="box" class="ui-widget-content">
+      <span class="handle">handle</span>
 		  <h3 class="ui-widget-header">Resizable</h3>
 		</div>
 
@@ -36,7 +37,8 @@
   	width:0,
   	height:0
   };
-  $('#box').draggable().sortable().resizable({
+  
+  $('#box').resizable({
   	resize:function(e,ui){
   		$('#box2').css('width',$('.wrap').width()-ui.size.width)
   	},
@@ -44,6 +46,7 @@
   	minWidth: 10,
   	handles:'e'
   });
+  $('#box').draggable({handle:'.handle'});
   </script>
 </body>
 </html>

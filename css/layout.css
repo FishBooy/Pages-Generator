@@ -12,7 +12,7 @@ body{background: #f1f1f1 url(../img/body_bg.gif) repeat-y;}
 
 /*===========*/
 .side-bar{position: absolute;left: 0;top: 0;width: 100px;background: #383c42;float: left;}
-.side-bar .logo a{display:block;height: 34px;line-height: 34px;font-size: 24px;color: #fff;font-family: '微软雅黑';font-weight: bold;text-align: center;border-bottom: #32353b 1px solid;padding-bottom: 20px;}
+.side-bar .logo a{display:block;height: 34px;line-height: 34px;font-size: 24px;color: #fff;font-family: '微软雅黑';font-weight: bold;text-align: center;border-bottom: #32353b 1px solid;border-right: #32353b 1px solid;padding-bottom: 20px}
 .top-nav{padding: 0;}
 .top-nav li{display: block;zoom: 1;}
 .top-nav li a{display: block;padding-left:20px;position: relative;height: 36px;line-height: 36px;text-align: center;zoom: 1;
@@ -57,7 +57,7 @@ background:url(../img/icons.gif) 18px 0 no-repeat;}
 .demo .preview{display: none;}
 
 .demo .ui-resizable{position: relative;}
-.demo .ui-resizable-e{border: #aaa 1px dashed;cursor: e-resize;position: absolute;right: 0;bottom: 0;width: 0px;height: 100%;border-top: none;border-bottom: none;
+.demo .ui-resizable-e{border-right: #aaa 1px dashed;cursor: e-resize;position: absolute;right: 0;bottom: 0;width: 0px;height: 100%;padding: 0 2px;
 }
 
 
