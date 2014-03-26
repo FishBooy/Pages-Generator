@@ -47,6 +47,7 @@ a{
 	left: 10px;
 	overflow: hidden;
 	padding: 0;
+	text-indent: 0;
 }
 .Gallery .titles a
 {

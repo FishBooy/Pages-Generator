@@ -30,6 +30,27 @@ $(function(){
 			clearResizeHtml()
 		}
 	};
+	function reBuild(e){
+		console.log('rebuild')
+		var html='<div><ul>'+$('ul',e).html()+'</ul></div>',
+			p=e.parent(),
+			w=p.width(),
+			h=w/2;
+
+		e.empty()
+		.data('gallery',null)
+		.removeClass()
+		.addClass('slider')
+		.html(html)
+		.gallery({height:h,width:w});
+	}
+	function reSlide(reb){
+		$.each($('.slider',demo),function(){
+			if(reb){reBuild($(this));return false;}
+			var h=$(this).parent().width()/2;
+			$(this).gallery({height:h});
+		});
+	}
 	restoreData();
 	
 	//尺寸调整
@@ -40,16 +61,29 @@ $(function(){
 		+parseInt(wrap.css('paddingTop'))
 		+parseInt(wrap.css('marginTop')),
 		resizeTid=null;
-	function heightChe(){
+	function heightChe(r){
+		console.log('hCheck',r)
+
 		if(demo.innerHeight()>wrap.height()){
-			wrap.addClass('scroll')
-		}else{wrap.removeClass('scroll')}
+			alert('>')
+			wrap.addClass('scroll');
+			reSlide(1);
+		}else{
+			if(wrap.hasClass('scroll')){
+				alert('<')
+				wrap.removeClass('scroll');
+				reSlide(1)
+			}else{
+				r && reSlide(1);
+
+			}
+		}
 	}
 	function sizeInit(){
 		var H=docWindow.height();
 		sideBar.css('height',H);
 		wrap.css('height',H-mp);
-		heightChe()
+		heightChe(1)
 		resizeTid=null;	
 	};
 	sizeInit();
@@ -84,11 +118,11 @@ $(function(){
 		sort=0,
 		selector='.lyrow,.box,.wdg',
 		body=$('body').addClass('edit');
-	function htmlRec(del){ 
+	function htmlRec(d){ 
 		var html=demo.html(),
 			data=htmlData;
 		data.count++;
-		if(del){ data.step.push(html);return false;}
+		if(d){ data.step.push(html);heightChe();return false;}
 		!drag && !sort && data.step.push(html);
 		heightChe();
 	};
@@ -113,7 +147,7 @@ $(function(){
 					var size=ui.element.data('pre'),
 						pre=(!size)? ui.originalSize.width : size;
 						next.css('width',next.width()+pre-ui.size.width);
-				        ui.element.data('pre',ui.size.width);					
+				        ui.element.data('pre',ui.size.width);				
 				},
 				stop: function(e,ui){
 					var ele=ui.element,
@@ -125,12 +159,12 @@ $(function(){
 					next.css('width',nextPer+'%');
 					for(var i=0;i<siblings.length;i++){arr.push(siblings.eq(i))};
 					for(var j=0;j<arr.length;j++){
-						resize(arr[j]
+						arr[j].next().length && resize(arr[j]
 							.data('resize',undefined)
 							.data('pre',undefined)
-							.resizable('destroy'));
+							.resizable({destroy:1}));
 					};
-					htmlRec(true);
+					// htmlRec(1);
 				},
 				maxWidth:maxW,
 				minWidth:50
@@ -161,7 +195,7 @@ $(function(){
 			cols.sortable({
 				opacity: .5,
 				connectWith: '.col',
-				handle:'drag',
+				handle:'.drag',
 				start: function(e,t) {(sort===0) && (sort++)},
 				stop: function(e,t) {sort--;drag || htmlRec(); }
 			});
@@ -183,11 +217,7 @@ $(function(){
 		start: function(e,t) {drag++},
 		drag: function(e, t) {t.helper.width(400)},
 		stop: function() {
-			$.each($('.demo .slider'),function(){
-				var h=$(this).parent().width()/2;
-				console.log(h);
-				$(this).gallery({height:h});
-			});
+			reSlide();
 			drag--;
 			htmlRec();
 		}
