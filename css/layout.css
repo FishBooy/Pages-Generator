@@ -53,7 +53,7 @@ background:url(../img/icons.gif) 18px 0 no-repeat;}
 .ui-draggable-dragging .view{ display:block;}
 
 .demo .lyrow{position: relative;margin: 10px auto 0 auto;background: #eaeaea;border: #cfcfcf 1px solid;}
-.demo .lyrow .lyrow{border:0px;border-top:#cfcfcf 1px solid;}
+.demo .lyrow .lyrow{border-top:#cfcfcf 1px solid;}
 .demo .preview{display: none;}
 
 .demo .ui-resizable{position: relative;}

@@ -62,7 +62,7 @@ $(function(){
 		+parseInt(wrap.css('marginTop')),
 		resizeTid=null;
 	function heightChe(r){
-		console.log('hCheck',r)
+		// console.log('hCheck',r)
 
 		if(demo.innerHeight()>wrap.height()){
 			alert('>')
@@ -139,6 +139,7 @@ $(function(){
 		
 		var next=e.next();
 		if(next.length){
+			// console.log('resize初始化!',e.width()+next.width())
 			var maxW=e.width()+next.width()-50;
 			e.data('resize',1);
 			e.resizable({
@@ -146,6 +147,8 @@ $(function(){
 				resize: function(e,ui){
 					var size=ui.element.data('pre'),
 						pre=(!size)? ui.originalSize.width : size;
+
+						console.log(next.width(),pre-ui.size.width);
 						next.css('width',next.width()+pre-ui.size.width);
 				        ui.element.data('pre',ui.size.width);				
 				},
@@ -162,7 +165,7 @@ $(function(){
 						arr[j].next().length && resize(arr[j]
 							.data('resize',undefined)
 							.data('pre',undefined)
-							.resizable({destroy:1}));
+							.resizable('destroy'));
 					};
 					// htmlRec(1);
 				},
