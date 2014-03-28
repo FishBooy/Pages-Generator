@@ -52,13 +52,12 @@ background:url(../img/icons.gif) 18px 0 no-repeat;}
 .ui-draggable-dragging .drag{right: 8px;top: 8px;background: #555;border-color: #444;}
 .ui-draggable-dragging .view{ display:block;}
 
-.demo .lyrow{position: relative;margin: 10px auto 0 auto;background: #eaeaea;border: #cfcfcf 1px solid;}
+.demo .lyrow{position: relative;background: #eaeaea;border: #cfcfcf 1px solid;margin: 0px auto 0 auto;}
 .demo .lyrow .lyrow{border-top:#cfcfcf 1px solid;}
 .demo .preview{display: none;}
 
-.demo .ui-resizable{position: relative;}
-.demo .ui-resizable-e{border-right: #aaa 1px dashed;cursor: e-resize;position: absolute;right: 0;bottom: 0;width: 0px;height: 100%;padding: 0 2px;
-}
+.demo .resizable{position: relative;}
+.demo .resizable .resize-handle{border-left: #aaa 1px dashed;cursor: e-resize;position: absolute;right: 0;bottom: 0;width: 0px;height: 100%;padding: 0 2px;}
 
 
 .demo .ctrl-btns{position: absolute;right: 2px;top: 2px;}
