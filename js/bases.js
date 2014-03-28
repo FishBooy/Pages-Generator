@@ -1,10 +1,50 @@
+;(function($){
+	function Drag(opts,ele){
+		this.opts = $.extend({}, this.args, opts ? opts : {});
+		this.msLeft=0;
+		this.sLeft=0;
+		this.handle=ele;
+		this.handle.bind('mousedown',{self:this},this.down);
+	};
+	Drag.prototype.args={
+		moveCall:function(){},
+		stopCall:function(){},
+		max:1000,
+		min:0
+	};
+	Drag.prototype.down=function(e){
+		var self=e.data.self;
+		self.msLeft=e.pageX;
+		self.sLeft=parseInt(self.handle.css('left'));
+		self.handle.addClass('down');
+		$(document).bind('mousemove',{self:self},self.move).bind('mouseup',{self:self},self.up);
+	};
+	Drag.prototype.move=function(e){
+		var self=e.data.self,
+			msEndX=e.pageX,
+			distance=msEndX-self.msLeft,
+			finalLeft=Math.min(Math.max(self.sLeft+distance, self.opts.min), self.opts.max);
+		self.handle.css({left: finalLeft});
+		self.opts.moveCall(self.handle)
+	};
+	Drag.prototype.up=function(e){
+		var self=e.data.self,
+			left=parseInt(self.handle.css('left'));
+		self.handle.removeClass('down');
+		$(document).unbind('mousemove',self.move).unbind('mouseup',self.up);
+		self.opts.stopCall(self.handle,left);
+	};	
+	$.fn.iqlDrag = function(opts) {
+		return this.each(function() {
+			$(this).data('iqlDrag') || $(this).data('iqlDrag', new Drag(opts ? opts : {}, $(this)))
+		});
+	}
+})(jQuery);
 
-
+/*=============================================*/
 $(function(){
-
 	/*
 	**获取本地存储并填充
-	**
 	*/
 	var demo=$('.demo'),
 		htmlData;
@@ -31,7 +71,6 @@ $(function(){
 		}
 	};
 	function reBuild(e){
-		console.log('rebuild')
 		var html='<div><ul>'+$('ul',e).html()+'</ul></div>',
 			p=e.parent(),
 			w=p.width(),
@@ -52,7 +91,6 @@ $(function(){
 		});
 	}
 	restoreData();
-	
 	//尺寸调整
 	var docWindow=$(window),
 		wrap=$('.doc-wrap'),
@@ -91,7 +129,6 @@ $(function(){
 		resizeTid && clearTimeout(resizeTid);
 		resizeTid=setTimeout(sizeInit,20);
 	});
-
 	//左侧菜单折叠
 	var topNav=$('.top-nav'),
 		subNav=$('.sub-nav');
@@ -108,6 +145,7 @@ $(function(){
 			menuList.slideDown('fast');
 		}
 	});
+
 
 	/*
 	**拖拽及排序:
@@ -135,55 +173,45 @@ $(function(){
 			stop: function(e,t) {sort--;drag || htmlRec();}
 		});
 	};
-	function resize(e){
-		
-		var next=e.next();
-		if(next.length){
-			// console.log('resize初始化!',e.width()+next.width())
-			var maxW=e.width()+next.width()-50;
-			e.data('resize',1);
-			e.resizable({
-				handles:'e',
-				resize: function(e,ui){
-					var size=ui.element.data('pre'),
-						pre=(!size)? ui.originalSize.width : size;
+	function resizeInit(rows){
+		$.each(rows,function(){
+			var row=$(this).addClass('resizable'),
+				cols=$('.col',row),
+				rWidth=row.width(),
+				dis=(100/$('.col',row).length).toFixed(1);
 
-						console.log(next.width(),pre-ui.size.width);
-						next.css('width',next.width()+pre-ui.size.width);
-				        ui.element.data('pre',ui.size.width);				
-				},
-				stop: function(e,ui){
-					var ele=ui.element,
-						percentInt=(ele.width()/ele.parent().width()*100).toFixed(1),
-						nextPer=(next.width()/ele.parent().width()*100).toFixed(1),
-						siblings=ele.siblings(),
-						arr=[ele];
-					ele.css('width',percentInt+'%');
-					next.css('width',nextPer+'%');
-					for(var i=0;i<siblings.length;i++){arr.push(siblings.eq(i))};
-					for(var j=0;j<arr.length;j++){
-						arr[j].next().length && resize(arr[j]
-							.data('resize',undefined)
-							.data('pre',undefined)
-							.resizable('destroy'));
-					};
-					// htmlRec(1);
-				},
-				maxWidth:maxW,
-				minWidth:50
-			})
-		}	
-	}
-	function resizeInit(cols){
-		$.each(cols,function(k,v){
-			if(!$(v).data('resize')){
-				resize($(v))
-			}
+			$.each(cols,function(k,v){
+				var col=$(v),
+					next=col.next();
+				if(next.length){
+					console.log(k)
+					var drag;
+					if(!next.hasClass('resize-handle')){
+						drag=$('<div></div>').addClass('resize-handle').insertAfter(col).css('left',(k+1)*dis+'%');
+					}else{drag=col.next()}
+					var prevs=drag.prevAll('.resize-handle'),
+						len=prevs.length,
+						next=drag.next(),
+						max=parseInt(drag.css('left'))+next.width(),
+						min=(len)?parseInt(prevs.eq(0).css('left')):0;
+						
+					drag.removeData('iqlDrag')
+					drag.iqlDrag({
+						stopCall:function(o,l){
+							col.css('width',((l-min)/rWidth*100).toFixed(1)+'%');
+							next.css('width',((max-l)/rWidth*100).toFixed(1)+'%');
+							resizeInit(row);
+						},
+						max:max-20,
+						min:min+20
+					});
+				}
+			});
 		})
 	};
 	//排序初始化
 	initContainer();
-	resizeInit($('.col',demo));
+	resizeInit($('.row',demo));
 	//左侧拖拽&&右侧排序
 	$('.sidebar-nav .lyrow').draggable({
 		connectToSortable: '.demo',
@@ -202,7 +230,6 @@ $(function(){
 				start: function(e,t) {(sort===0) && (sort++)},
 				stop: function(e,t) {sort--;drag || htmlRec(); }
 			});
-			resizeInit(cols);
 		}
 	});
 	$('.sidebar-nav .box').draggable({
@@ -310,9 +337,8 @@ $(function(){
 	});
 	$('#save').on('click',function(e){
 		e.preventDefault();
-		console.log($('.demo').html())
 		saveLayout();
-		alert('保存成功')
+		console.log('保存成功')
 	})
 
 })

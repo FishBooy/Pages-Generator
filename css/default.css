@@ -12,10 +12,12 @@ ul{padding: 5px;}
 ul li{list-style: inside;}
 
 .row:after{content: '.';visibility: hidden;display: block;clear: both;height: 0;}
-.row .col{float: left;min-height: 50px;width: 100%;}
+.row{}
+.row .col{float: left;width: 100%;min-height: 50px;}
 .row .col-50{width: 50%;}
 .row .col-50 .lyrow{border-right: #cfcfcf 1px solid;}
 .row .col-50 .box,.row .col-50 .wdg{border-right: #eaeaea 1px solid;}
 
 .row .col-33{width: 33.3%;}
+.row .col-25{width: 25%;}
 
