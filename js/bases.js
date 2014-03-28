@@ -158,8 +158,8 @@ $(function(){
 						nextPer=(next.width()/ele.parent().width()*100).toFixed(1),
 						siblings=ele.siblings(),
 						arr=[ele];
-					ele.css('width',percentInt+'%');
-					next.css('width',nextPer+'%');
+					// ele.css('width',percentInt+'%');
+					// next.css('width',nextPer+'%');
 					for(var i=0;i<siblings.length;i++){arr.push(siblings.eq(i))};
 					for(var j=0;j<arr.length;j++){
 						arr[j].next().length && resize(arr[j]
