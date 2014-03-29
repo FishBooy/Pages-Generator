@@ -52,12 +52,12 @@ background:url(../img/icons.gif) 18px 0 no-repeat;}
 .ui-draggable-dragging .drag{right: 8px;top: 8px;background: #555;border-color: #444;}
 .ui-draggable-dragging .view{ display:block;}
 
-.demo .lyrow{position: relative;background: #eaeaea;border: #cfcfcf 1px solid;margin: 0px auto 0 auto;}
+.demo .lyrow{position: relative;background: #eaeaea;border: #cfcfcf 1px solid;margin: 10px auto 0 auto;}
 .demo .lyrow .lyrow{border-top:#cfcfcf 1px solid;}
 .demo .preview{display: none;}
 
 .demo .resizable{position: relative;}
-.demo .resizable .resize-handle{border-left: #aaa 1px dashed;cursor: e-resize;position: absolute;right: 0;bottom: 0;width: 0px;height: 100%;padding: 0 2px;}
+.demo .resizable .resize-handle{border-left: #aaa 1px dashed;cursor: e-resize;position: absolute;right: 0;bottom: 0;width: 0px;height: 100%;padding: 0 2px;z-index: 999;}
 
 
 .demo .ctrl-btns{position: absolute;right: 2px;top: 2px;}
@@ -95,7 +95,7 @@ background:url(../img/icons.gif) 18px 0 no-repeat;}
 .source-preview .demo .lyrow,
 .source-preview .demo .box,
 .source-preview .demo .wdg{border: none;background: none;}
-.source-preview .demo .ui-resizable-e{display: none;}
+.source-preview .demo .resize-handle{display: none;}
 
 
 .dialogs{position: absolute;left:0;top:0;width: 100%;height:100%;background: rgba(33, 36, 46, 0.7);}

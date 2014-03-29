@@ -25,7 +25,6 @@
 			distance=msEndX-self.msLeft,
 			finalLeft=Math.min(Math.max(self.sLeft+distance, self.opts.min), self.opts.max);
 		self.handle.css({left: finalLeft});
-		self.opts.moveCall(self.handle)
 	};
 	Drag.prototype.up=function(e){
 		var self=e.data.self,
@@ -83,11 +82,14 @@ $(function(){
 		.html(html)
 		.gallery({height:h,width:w});
 	}
-	function reSlide(reb){
-		$.each($('.slider',demo),function(){
-			if(reb){reBuild($(this));return false;}
-			var h=$(this).parent().width()/2;
-			$(this).gallery({height:h});
+	function reSlide(wrap,reb){
+		box=wrap?wrap:demo;
+		$.each($('.slider',box),function(k,v){
+			if(reb){reBuild($(this));}
+			else{
+				var h=$(this).parent().width()/2;
+				$(this).gallery({height:h});
+			}
 		});
 	}
 	restoreData();
@@ -100,19 +102,16 @@ $(function(){
 		+parseInt(wrap.css('marginTop')),
 		resizeTid=null;
 	function heightChe(r){
-		// console.log('hCheck',r)
-
 		if(demo.innerHeight()>wrap.height()){
-			alert('>')
 			wrap.addClass('scroll');
-			reSlide(1);
+			resizeInit($('.row',demo).data('resize',0));
+			reSlide(demo,1);
 		}else{
 			if(wrap.hasClass('scroll')){
-				alert('<')
 				wrap.removeClass('scroll');
-				reSlide(1)
+				reSlide(demo,1)
 			}else{
-				r && reSlide(1);
+				r && reSlide(demo,1);
 
 			}
 		}
@@ -124,6 +123,7 @@ $(function(){
 		heightChe(1)
 		resizeTid=null;	
 	};
+	document.onselectstart=function(){return false;};
 	sizeInit();
 	docWindow.on('resize',function(){
 		resizeTid && clearTimeout(resizeTid);
@@ -175,37 +175,43 @@ $(function(){
 	};
 	function resizeInit(rows){
 		$.each(rows,function(){
-			var row=$(this).addClass('resizable'),
-				cols=$('.col',row),
-				rWidth=row.width(),
-				dis=(100/$('.col',row).length).toFixed(1);
-			$.each(cols,function(k,v){
-				var col=$(v),
-					next=col.next();
-				if(next.length){
-					console.log(k)
-					var drag;
-					if(!next.hasClass('resize-handle')){
-						drag=$('<div></div>').addClass('resize-handle').insertAfter(col).css('left',(k+1)*dis+'%');
-					}else{drag=col.next()}
-					var prevs=drag.prevAll('.resize-handle'),
-						len=prevs.length,
-						next=drag.next(),
-						max=parseInt(drag.css('left'))+next.width(),
-						min=(len)?parseInt(prevs.eq(0).css('left')):0;
-						
-					drag.removeData('iqlDrag')
-					drag.iqlDrag({
-						stopCall:function(o,l){
-							col.css('width',((l-min)/rWidth*100).toFixed(1)+'%');
-							next.css('width',((max-l)/rWidth*100).toFixed(1)+'%');
-							resizeInit(row);
-						},
-						max:max-20,
-						min:min+20
-					});
-				}
-			});
+			if(!$(this).data('resize')){
+				var row=$(this).addClass('resizable'),
+					cols=$('.col',row),
+					rWidth=row.width(),
+					dis=(100/$('.col',row).length).toFixed(1);
+				$.each(cols,function(k,v){
+					var col=$(v),
+						next=col.next();
+					if(next.length){
+						var drag;
+						if(!next.hasClass('resize-handle')){
+							drag=$('<div></div>').addClass('resize-handle').insertAfter(col).css('left',(k+1)*dis+'%');
+						}else{drag=col.next()}
+						var prevs=drag.prevAll('.resize-handle'),
+							len=prevs.length,
+							next=drag.next(),
+							max=parseInt(drag.css('left'))+next.width(),
+							min=(len)?parseInt(prevs.eq(0).css('left')):0;
+							
+						drag.removeData('iqlDrag')
+						drag.iqlDrag({
+							stopCall:function(o,l){
+								o.css('left',(l/rWidth*100).toFixed(1)+'%');
+								col.css('width',((l-min)/rWidth*100).toFixed(1)+'%');
+								next.css('width',((max-l)/rWidth*100).toFixed(1)+'%');
+
+								reSlide(row,1);
+								resizeInit(row.data('resize',0));
+								htmlRec();
+							},
+							max:max-20,
+							min:min+20
+						});
+					}
+				});
+				$(this).data('resize',1);
+			}
 		})
 	};
 	//排序初始化
@@ -229,6 +235,7 @@ $(function(){
 				start: function(e,t) {(sort===0) && (sort++)},
 				stop: function(e,t) {sort--;drag || htmlRec(); }
 			});
+			resizeInit($('.row',demo))
 		}
 	});
 	$('.sidebar-nav .box').draggable({
@@ -286,6 +293,7 @@ $(function(){
 		x && body.removeClass(data.cN1).addClass(data.cN2);
 		sideBar.animate({left:data.lv},200,function(){
 			!x && body.removeClass(data.cN1).addClass(data.cN2);
+			reSlide(demo,1);
 		});
 		return false;		
 	};
@@ -301,7 +309,8 @@ $(function(){
 		$('.demo').html(data.step[data.count]);
 
 		initContainer();
-		resizeInit($('.demo .col'));	
+		resizeInit($('.demo .col'));
+		reSlide(demo,1);	
 	};
 	function saveLayout(){
 		var data = htmlData,
