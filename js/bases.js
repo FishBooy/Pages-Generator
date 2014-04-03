@@ -3,52 +3,7 @@ var styles={
 	type:{
 		block:['align','background','border','font','height','width']
 	}
-}
-/*==================尺寸拖拽====================*/
-;(function($){
-	function Drag(opts,ele){
-		this.opts = $.extend({}, this.args, opts ? opts : {});
-		this.msLeft=0;
-		this.sLeft=0;
-		this.handle=ele;
-		this.handle.bind('mousedown',{self:this},this.down);
-	};
-	Drag.prototype.args={
-		moveCall:function(){},
-		upCall:function(){},
-		max:1000,
-		min:0
-	};
-	Drag.prototype.down=function(e){
-		var self=e.data.self;
-		self.msLeft=e.pageX;
-		self.sLeft=parseInt(self.handle.css('left'));
-		self.handle.addClass('down');
-		$(document).bind('mousemove',{self:self},self.move).bind('mouseup',{self:self},self.up);
-	};
-	Drag.prototype.move=function(e){
-		var self=e.data.self,
-			msEndX=e.pageX,
-			distance=msEndX-self.msLeft,
-			finalLeft=Math.min(Math.max(self.sLeft+distance, self.opts.min), self.opts.max);
-		self.handle.css({left: finalLeft});
-		self.opts.moveCall(msEndX)
-	};
-	Drag.prototype.up=function(e){
-		console.log('up!')
-		var self=e.data.self,
-			left=parseInt(self.handle.css('left'));
-		self.handle.removeClass('down');
-		self.opts.upCall(self.handle,left);
-		$(document).unbind('mousemove',self.move).unbind('mouseup',self.up);
-	};	
-	$.fn.iqlDrag = function(opts) {
-		return this.each(function() {
-			$(this).data('iqlDrag') || $(this).data('iqlDrag', new Drag(opts ? opts : {}, $(this)))
-		});
-	}
-})(jQuery);
-
+};
 /*=============================================*/
 $(function(){
 	/*
@@ -121,8 +76,8 @@ $(function(){
 				reSlide(demo,1)
 			}else{
 				r && reSlide(demo,1);
-
-			}
+			};
+			r && resizeInit($('.row',demo).data('resize',0));
 		}
 	}
 	function sizeInit(){
@@ -183,17 +138,15 @@ $(function(){
 		});
 	};
 	function resizeInit(rows){
-
+		console.log('drag init')
 		$.each(rows,function(){
-			console.log($(this).data('resize'),'row开始遍历');
 			if(!$(this).data('resize')){
 				var row=$(this).addClass('resizable'),
 					cols=$('.col',row),
 					rWidth=row.width(),
 					dis=(100/$('.col',row).length).toFixed(1);
-				console.log('cols开始遍历')
+
 				$.each(cols,function(k,v){
-					console.log(k)
 					var col=$(v),
 						next=col.next();
 					if(next.length){
@@ -202,31 +155,26 @@ $(function(){
 							drag=$('<div></div>').addClass('resize-handle').insertAfter(col).css('left',(k+1)*dis+'%');
 						}else{drag=col.next()}
 						var prevs=drag.prevAll('.resize-handle'),
+							prev=prevs.eq(0),
 							len=prevs.length,
-							nextCol=drag.next(),
-							max=parseInt(drag.css('left'))+nextCol.width(),
-							min=(len)?parseInt(prevs.eq(0).css('left')):0;
+							nextCol=drag.next();
 							
-						drag.data('iqlDrag',null);
-						console.log(drag.data());
 						drag.iqlDrag({
-							upCall:function(o,l){
-								console.log('upCallBack')
+							ready:function(opts){
+								opts.max=parseInt(drag.css('left'))+nextCol.width(),
+								opts.min=((len)?parseInt(prev.css('left')):0);
+							},
+							upCall:function(o,l,max,min){
 								o.css('left',(l/rWidth*100).toFixed(1)+'%');
 								col.css('width',((l-min)/rWidth*100).toFixed(1)+'%');
 								nextCol.css('width',((max-l)/rWidth*100).toFixed(1)+'%');
 
 								reSlide(row,1);
-								row.data('resize',0)
-								resizeInit(row);
 								htmlRec();
-							},
-							max:max-10,
-							min:min+10
+							}
 						});
 					}
 				});
-				console.log('cols结束遍历')
 				$(this).data('resize',1);
 			}
 		})
@@ -236,7 +184,6 @@ $(function(){
 	function setId(){};
 	//排序初始化
 	initContainer();
-	resizeInit($('.row',demo));
 	//左侧拖拽&&右侧排序
 	$('.sidebar-nav .lyrow').draggable({
 		connectToSortable: '.demo',
