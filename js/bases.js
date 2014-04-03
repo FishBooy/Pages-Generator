@@ -1,3 +1,10 @@
+/*=================可编辑样式====================*/
+var styles={
+	type:{
+		block:['align','background','border','font','height','width']
+	}
+}
+/*==================尺寸拖拽====================*/
 ;(function($){
 	function Drag(opts,ele){
 		this.opts = $.extend({}, this.args, opts ? opts : {});
@@ -8,7 +15,7 @@
 	};
 	Drag.prototype.args={
 		moveCall:function(){},
-		stopCall:function(){},
+		upCall:function(){},
 		max:1000,
 		min:0
 	};
@@ -25,13 +32,15 @@
 			distance=msEndX-self.msLeft,
 			finalLeft=Math.min(Math.max(self.sLeft+distance, self.opts.min), self.opts.max);
 		self.handle.css({left: finalLeft});
+		self.opts.moveCall(msEndX)
 	};
 	Drag.prototype.up=function(e){
+		console.log('up!')
 		var self=e.data.self,
 			left=parseInt(self.handle.css('left'));
 		self.handle.removeClass('down');
+		self.opts.upCall(self.handle,left);
 		$(document).unbind('mousemove',self.move).unbind('mouseup',self.up);
-		self.opts.stopCall(self.handle,left);
 	};	
 	$.fn.iqlDrag = function(opts) {
 		return this.each(function() {
@@ -127,7 +136,7 @@ $(function(){
 	sizeInit();
 	docWindow.on('resize',function(){
 		resizeTid && clearTimeout(resizeTid);
-		resizeTid=setTimeout(sizeInit,20);
+		resizeTid=setTimeout(sizeInit,200);
 	});
 	//左侧菜单折叠
 	var topNav=$('.top-nav'),
@@ -174,13 +183,17 @@ $(function(){
 		});
 	};
 	function resizeInit(rows){
+
 		$.each(rows,function(){
+			console.log($(this).data('resize'),'row开始遍历');
 			if(!$(this).data('resize')){
 				var row=$(this).addClass('resizable'),
 					cols=$('.col',row),
 					rWidth=row.width(),
 					dis=(100/$('.col',row).length).toFixed(1);
+				console.log('cols开始遍历')
 				$.each(cols,function(k,v){
+					console.log(k)
 					var col=$(v),
 						next=col.next();
 					if(next.length){
@@ -190,30 +203,37 @@ $(function(){
 						}else{drag=col.next()}
 						var prevs=drag.prevAll('.resize-handle'),
 							len=prevs.length,
-							next=drag.next(),
-							max=parseInt(drag.css('left'))+next.width(),
+							nextCol=drag.next(),
+							max=parseInt(drag.css('left'))+nextCol.width(),
 							min=(len)?parseInt(prevs.eq(0).css('left')):0;
 							
-						drag.removeData('iqlDrag')
+						drag.data('iqlDrag',null);
+						console.log(drag.data());
 						drag.iqlDrag({
-							stopCall:function(o,l){
+							upCall:function(o,l){
+								console.log('upCallBack')
 								o.css('left',(l/rWidth*100).toFixed(1)+'%');
 								col.css('width',((l-min)/rWidth*100).toFixed(1)+'%');
-								next.css('width',((max-l)/rWidth*100).toFixed(1)+'%');
+								nextCol.css('width',((max-l)/rWidth*100).toFixed(1)+'%');
 
 								reSlide(row,1);
-								resizeInit(row.data('resize',0));
+								row.data('resize',0)
+								resizeInit(row);
 								htmlRec();
 							},
-							max:max-20,
-							min:min+20
+							max:max-10,
+							min:min+10
 						});
 					}
 				});
+				console.log('cols结束遍历')
 				$(this).data('resize',1);
 			}
 		})
 	};
+	function formCreate(styles){
+	};
+	function setId(){};
 	//排序初始化
 	initContainer();
 	resizeInit($('.row',demo));
@@ -223,8 +243,8 @@ $(function(){
 		helper: 'clone',
 		opacity: .5,
 		start: function(e,t) {drag++},
-		drag: function(e, t) {t.helper.width(400)},
-		stop: function(e, t) {
+		drag: function(e,t) {t.helper.width(400);},
+		stop: function(e,t) {
 			drag--;
 			htmlRec();
 			var cols=$('.col',demo);
@@ -235,7 +255,8 @@ $(function(){
 				start: function(e,t) {(sort===0) && (sort++)},
 				stop: function(e,t) {sort--;drag || htmlRec(); }
 			});
-			resizeInit($('.row',demo))
+			resizeInit($('.row',demo));
+			t.helper.attr('id','idname')
 		}
 	});
 	$('.sidebar-nav .box').draggable({
@@ -243,8 +264,8 @@ $(function(){
 		helper: 'clone',
 		opacity: .5,
 		start: function(e,t) {drag++},
-		drag: function(e, t) {t.helper.width(400)},
-		stop: function() {drag--;htmlRec()}
+		drag: function(e,t) {t.helper.width(400)},
+		stop: function(e,t) {drag--;htmlRec();console.log(t);t.helper.attr('id','idname')}
 	});
 	$('.sidebar-nav .wdg').draggable({
 		connectToSortable: '.col',
@@ -259,10 +280,19 @@ $(function(){
 		}
 	});
 	//按钮组件相关
-	demo.on('click','.remove',function(e) {
+	demo
+	.on('click','.remove',function(e) {
 		e.preventDefault();
 		$(this).parent().parent().remove();
 		htmlRec(true);
+	})
+	.on('click','.edit',function(e) {
+		e.preventDefault();
+		var p=$(this).parent().parent(),
+		type=(p.hasClass('box'))?'block':'',
+		styles=styles[type];
+		formCreate(styles);
+
 	});
 	$('.edit .demo')
 		.on('mouseover',selector,function(e){
@@ -347,6 +377,18 @@ $(function(){
 		e.preventDefault();
 		saveLayout();
 		console.log('保存成功')
-	})
+	});
+
+$('#dynamic').text('form{background:red;}')
+
+
+
+
+
+
+
+
+
+
 
 })
