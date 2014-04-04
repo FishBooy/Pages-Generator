@@ -1,9 +1,20 @@
 /*=================可编辑样式====================*/
-var styles={
-	type:{
-		block:['align','background','border','font','height','width']
+var Data={
+	head:{
+		css:['align','background','border','font','height','width'],
+		contents:"标题内容",
+		tpl:"string"
 	}
 };
+
+// function(cssArr){
+// 	var i=0,l=cssArr.length,html;
+// 	for(i;i<cssArr.length;i++){
+// 		switch (cssArr[i]){
+// 			case 'align':
+// 		}
+// 	}
+// }
 /*=============================================*/
 $(function(){
 	/*
@@ -65,6 +76,11 @@ $(function(){
 		+parseInt(wrap.css('paddingTop'))
 		+parseInt(wrap.css('marginTop')),
 		resizeTid=null;
+	function modalMove(){
+		$('.modal:visible').each(function(){
+			$(this).css({left:($(window).width()-$(this).width())/2});
+		})
+	}
 	function heightChe(r){
 		if(demo.innerHeight()>wrap.height()){
 			wrap.addClass('scroll');
@@ -79,11 +95,13 @@ $(function(){
 			};
 			r && resizeInit($('.row',demo).data('resize',0));
 		}
-	}
+	};
 	function sizeInit(){
 		var H=docWindow.height();
 		sideBar.css('height',H);
 		wrap.css('height',H-mp);
+		modalMove();
+
 		heightChe(1)
 		resizeTid=null;	
 	};
@@ -91,7 +109,7 @@ $(function(){
 	sizeInit();
 	docWindow.on('resize',function(){
 		resizeTid && clearTimeout(resizeTid);
-		resizeTid=setTimeout(sizeInit,200);
+		resizeTid=setTimeout(sizeInit,50);
 	});
 	//左侧菜单折叠
 	var topNav=$('.top-nav'),
@@ -227,6 +245,7 @@ $(function(){
 		}
 	});
 	//按钮组件相关
+	$('.tabs').tinyTab();
 	demo
 	.on('click','.remove',function(e) {
 		e.preventDefault();
@@ -236,11 +255,23 @@ $(function(){
 	.on('click','.edit',function(e) {
 		e.preventDefault();
 		var p=$(this).parent().parent(),
-		type=(p.hasClass('box'))?'block':'',
-		styles=styles[type];
-		formCreate(styles);
+		type=(p.hasClass('box'))?'block':'';
+		$('.modals').fadeIn(200, function() {
+			var layer=$('.modal',this);
+			layer.css({left:($(window).width()-layer.width())/2})
+			.on('click',function(e){
+				e.preventDefault();
+				$(e.target).hasClass('close') || e.stopPropagation();
+			}).fadeIn(100);
+		});
 
+	})
+	$('.modals').on('click',function() {
+		$(this).fadeOut(100, function() {
+			$(this).find('.modal').hide();
+		});
 	});
+
 	$('.edit .demo')
 		.on('mouseover',selector,function(e){
 			e.stopPropagation();
@@ -268,7 +299,7 @@ $(function(){
 		topBtns.find('.active').removeClass(ac);
 		$(this).addClass(ac);
 		x && body.removeClass(data.cN1).addClass(data.cN2);
-		sideBar.animate({left:data.lv},200,function(){
+		sideBar.animate({left:data.lv},180,function(){
 			!x && body.removeClass(data.cN1).addClass(data.cN2);
 			reSlide(demo,1);
 		});
@@ -286,7 +317,7 @@ $(function(){
 		$('.demo').html(data.step[data.count]);
 
 		initContainer();
-		resizeInit($('.demo .col'));
+		resizeInit($('.row',demo));
 		reSlide(demo,1);	
 	};
 	function saveLayout(){
@@ -326,7 +357,6 @@ $(function(){
 		console.log('保存成功')
 	});
 
-$('#dynamic').text('form{background:red;}')
 
 
 

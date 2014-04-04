@@ -40,7 +40,7 @@
 					<a href="" class="layout"><span>布局</span></a>
 					<ul class="sub-nav">
 						<li>
-							<div class="lyrow">
+							<div class="lyrow" data-type="row">
 								<span class="preview">通栏</span>
 								<div class="ctrl-btns">
 									<span class="edit">编辑</span>
@@ -111,7 +111,7 @@
 					<a href="" class="elements"><span>元素</span></a>
 					<ul class="sub-nav">
 						<li>
-							<div class="box">
+							<div class="box" data-type="head">
 								<span class="preview">标题</span>
 								<div class="ctrl-btns">
 									<span class="edit">编辑</span>
@@ -124,7 +124,7 @@
 							</div>
 						</li>
 						<li>
-							<div class="box">
+							<div class="box" data-type="paragraph">
 								<span class="preview">段落</span>
 								<div class="ctrl-btns">
 									<span class="edit">编辑</span>
@@ -137,7 +137,7 @@
 							</div>
 						</li>
 						<li>
-							<div class="box">
+							<div class="box" data-type="list">
 								<span class="preview">列表</span>
 								<div class="ctrl-btns">
 									<span class="edit">编辑</span>
@@ -155,7 +155,7 @@
 							</div>
 						</li>
 						<li class="last">
-							<div class="box">
+							<div class="box" data-type="image">
 								<span class="preview">图片</span>
 								<div class="ctrl-btns">
 									<span class="edit">编辑</span>
@@ -224,36 +224,64 @@
 	<!--end-->
 
 	<!--弹窗区域-->
-<!-- 	<div class="dialogs" id="doc-wrap">
-		<div class="edit-layer layer">
-			<h2>元素编辑</h2>
-			<form action="">
-				<table>
-					<tr>
-						<td>宽度:</td>
-						<td></td>
-					</tr>
-					<tr>
-						<td>高度:</td>
-						<td></td>
-					</tr>
-					<tr>
-						<td>背景:</td>
-						<td></td>
-					</tr>
-					<tr>
-						<td>边框:</td>
-						<td></td>
-					</tr>
-					<tr>
-						<td>文字:</td>
-						<td></td>
-					</tr>
-				</table>
-			</form>
+	<div class="modals" id="doc-wrap">
+		<div class="edit-layer modal tabs">
+			<a href="" class="close">X</a>
+			<div class="tab-pane">
+				<a href="" class="tab">样式</a>
+				<a href="" class="tab">数据</a>
+				<a href="" class="tab">模板</a>
+			</div>
+			<div class="tab-content">
+				<div class="tc">
+					<form action="">
+						<table>
+							<tr>
+								<td>宽度:</td>
+								<td></td>
+							</tr>
+							<tr>
+								<td>高度:</td>
+								<td></td>
+							</tr>
+							<tr>
+								<td>背景:</td>
+								<td></td>
+							</tr>
+							<tr>
+								<td>边框:</td>
+								<td></td>
+							</tr>
+							<tr>
+								<td>文字:</td>
+								<td></td>
+							</tr>
+						</table>
+					</form>
+				</div>
+				<div class="tc">
+					<form action="">
+						<table>
+							<tr>
+								<td>数据:</td>
+								<td></td>
+							</tr>
+						</table>
+					</form>
+				</div>
+				<div class="tc">
+					<form action="">
+						<table>
+							<tr>
+								<td>模板:</td>
+								<td></td>
+							</tr>
+						</table>
+					</form>
+				</div>
+			</div>
 		</div>
-		 <div class="save-layer layer">编辑层</div> -->
-	<!-- </div> -->
+	</div>
 	<!--end-->
 
 </body>

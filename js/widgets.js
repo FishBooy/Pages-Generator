@@ -347,6 +347,32 @@
 })(jQuery);
 
 
+/**tabs**/
+(function($){
+	$.fn.tinyTab=function(){
+		return this.each(function(){
+			var tabPane=$('.tab-pane',this),
+				tabContent=$('.tab-content',this),
+				panes=$('.tab',tabPane),
+				contents=$('.tc',tabContent);
+
+			panes.eq(0).addClass('on');
+			contents.eq(0).addClass('active');
+
+			panes.click(function(e){
+				e.preventDefault();
+				$('.on',tabPane).removeClass('on');
+				$(this).addClass('on');
+
+				$('.active',tabContent).removeClass('active');
+				contents.eq(panes.index($(this))).addClass('active');
+			})
+		})
+	};	
+})(jQuery);
+
+
+
 /************
 * name: layer
 * date: 2014-04-03
