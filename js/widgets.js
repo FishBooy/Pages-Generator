@@ -335,9 +335,9 @@
 		// console.log('up!')
 		var self=e.data.self,
 			left=parseInt(self.handle.css('left'));
+		$(document).unbind('mousemove',self.move).unbind('mouseup',self.up);
 		self.handle.removeClass('down');
 		self.opts.upCall(self.handle,left,self.opts.max,self.opts.min);
-		$(document).unbind('mousemove',self.move).unbind('mouseup',self.up);
 	};	
 	$.fn.iqlDrag = function(opts) {
 		return this.each(function() {

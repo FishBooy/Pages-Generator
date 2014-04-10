@@ -4,11 +4,13 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>专题</title>
 <link rel="stylesheet" type="text/css" href="css/jquery-gallery.css"/>
+<link rel="stylesheet" href="css/jquery.cxcolor.css">
 <link href="css/default.css" rel="stylesheet">
 <link href="css/layout.css" rel="stylesheet">
 <style type="text/css" id="dynamic"></style>
 <script type="text/javascript" src="js/jquery-2.0.0.min.js"></script>
 <script type="text/javascript" src="js/jquery-ui.js"></script>
+<script type="text/javascript" src="js/jquery.cxcolor.js"></script>
 <script type="text/javascript" src="js/widgets.js"></script>
 <script type="text/javascript" src="js/bases.js"></script>
 </head>
@@ -146,10 +148,10 @@
 								</div>
 								<div class="view">
 									<ul>
-										<li>终结越级上访重申法律原有之意</li>
-										<li>中国为何坚决反对朝鲜拥核</li>
-										<li>两岸破局，马英九当更进一步</li>
-										<li>钟南山的“医改变改医”也要两面看</li>
+										<li><a href="">终结越级上访重申法律原有之意</a></li>
+										<li><a href="">中国为何坚决反对朝鲜拥核</a></li>
+										<li><a href="">两岸破局，马英九当更进一步</a></li>
+										<li><a href="">钟南山的“医改变改医”也要两面看</a></li>
 									</ul>
 								</div>
 							</div>
@@ -163,7 +165,7 @@
 									<span class="remove">删除</span>
 								</div>
 								<div class="view">
-									<img src="http://b.zol-img.com.cn/desk/bizhi/image/4/720x360/1390701069444.jpg" alt="" />
+									<img src="img/demo.jpg" alt="" />
 								</div>
 							</div>
 						</li>
@@ -184,12 +186,12 @@
 									<div class="slider">
 										<div>
 											<ul>
-												<li><a href=""><img src="http://b.zol-img.com.cn/desk/bizhi/image/4/720x360/1390701069444.jpg" alt="巴黎铁塔" /></a></li>
-												<li><a href=""><img src="http://b.zol-img.com.cn/desk/bizhi/image/4/720x360/139081019660.jpg" alt="唯美景色" /></a></li>
-												<li><a href=""><img src="http://b.zol-img.com.cn/desk/bizhi/image/4/720x360/1390292317148.jpg" alt="广阔草原" /></a></li>
-												<li><a href=""><img src="http://b.zol-img.com.cn/desk/bizhi/image/4/720x360/138906094324.jpg" alt="傍晚的花丛" /></a></li>
-												<li><a href=""><img src="http://b.zol-img.com.cn/desk/bizhi/image/4/720x360/1392342759212.jpg" alt="浪漫情人节" /></a></li>
-												<li><a href=""><img src="http://b.zol-img.com.cn/desk/bizhi/image/4/720x360/1389664691376.jpg" alt="银色铁塔手链" /></a></li>
+												<li><a href=""><img src="img/demo.jpg" alt="1" /></a></li>
+												<li><a href=""><img src="img/demo.jpg" alt="2" /></a></li>
+												<li><a href=""><img src="img/demo.jpg" alt="3" /></a></li>
+												<li><a href=""><img src="img/demo.jpg" alt="4" /></a></li>
+												<li><a href=""><img src="img/demo.jpg" alt="5" /></a></li>
+												<li><a href=""><img src="img/demo.jpg" alt="6" /></a></li>
 											</ul>
 										</div>
 									</div>	
@@ -237,46 +239,73 @@
 					<form action="">
 						<table>
 							<tr>
-								<td>宽度:</td>
-								<td></td>
-							</tr>
-							<tr>
-								<td>高度:</td>
-								<td></td>
+								<td>尺寸:</td>
+								<td>
+									<div><label for="">宽度:</label><p><input type="text" name="font-size" class="size"/><span>px</span></p></div>
+									<div><label for="">高度:</label><p><input type="text" name="font-size" class="size"/><span>px</span></p></div>
+								</td>
 							</tr>
 							<tr>
 								<td>背景:</td>
-								<td></td>
+								<td><div><label for="">颜色:</label><p><input type="text" name="background-color" class="color-picker"/></p></div></td>
 							</tr>
 							<tr>
 								<td>边框:</td>
-								<td></td>
+								<td>
+									<div><label for="">颜色:</label><p><input type="text" name="background-color" class="color-picker"/></p></div>
+									<div><label for="">厚度:</label><p><input type="text" name="border-width" class="size"/><span>px</span></p></div>
+									<div class="float">
+										<label for="">样式:</label>
+										<p>
+											<select name="border-style" id="">
+												<option value="solid">solid</option>
+												<option value="dashed">dashed</option>
+												<option value="dotted">dotted</option>
+											</select>
+										</p>
+									</div>
+								</td>
 							</tr>
 							<tr>
 								<td>文字:</td>
-								<td></td>
+								<td>
+									<div><label for="">颜色:</label><p><input type="text" name="background-color" class="color-picker"/></p></div>
+									<div><label for="">大小:</label><p><input type="text" name="font-size" class="size"/><span>px</span></p></div>
+									<div><label for="">行高:</label><p><input type="text" name="line-height" class="size"/><span>px</span></p></div>
+									<div><label for="">字体:</label><p><input type="text" name="font-family" /></p></div>
+									<div class="float">
+										<label for="">样式:</label>
+										<p>
+											<select name="text-style" id="">
+												<option value="italic">normal</option>
+												<option value="italic">italic</option>
+											</select>
+										</p>
+									</div>
+									<div class="float">
+										<label for="">对齐:</label>
+										<p>
+											<select name="text-align" id="">
+												<option value="left">left</option>
+												<option value="center">center</option>
+												<option value="right">right</option>
+											</select>
+										</p>
+									</div>
+								</td>
+							</tr>
+							<tr>
+								<td colspan="2" class="submit"><button type="submit">保存</button></td>
 							</tr>
 						</table>
 					</form>
 				</div>
 				<div class="tc">
 					<form action="">
-						<table>
-							<tr>
-								<td>数据:</td>
-								<td></td>
-							</tr>
-						</table>
 					</form>
 				</div>
 				<div class="tc">
 					<form action="">
-						<table>
-							<tr>
-								<td>模板:</td>
-								<td></td>
-							</tr>
-						</table>
 					</form>
 				</div>
 			</div>

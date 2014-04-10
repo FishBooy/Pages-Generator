@@ -1,10 +1,17 @@
 /*=================可编辑样式====================*/
 var Data={
 	head:{
-		css:['align','background','border','font','height','width'],
-		contents:"标题内容",
-		tpl:"string"
-	}
+		css:['align','background','border','font','height','width']
+	},
+	paragraph:{
+		css:['align','background','border','font','height','width']		
+	},
+	list:{
+		css:['background','border','font','height','','width']
+	},
+	img:{
+		css:['align','border','height','width']
+	},	
 };
 
 // function(cssArr){
@@ -147,16 +154,26 @@ $(function(){
 		heightChe();
 	};
 	function initContainer(){
-		$('.demo, .demo .col').sortable({
+		var opts={
 			connectWith: '.col',
 			opacity: .5,
 			handle: '.drag',
 			start: function(e,t) {(sort===0) && (sort++)},
-			stop: function(e,t) {sort--;drag || htmlRec();}
+			stop: function(e,t) {sort--;drag || htmlRec();}	
+		},opts2=$.extend({},opts,{
+			stop: function(e,t) {
+				sort--;
+				if(!drag){
+					console.log('sort stop')
+					htmlRec();
+				}
+			}
 		});
+		
+		demo.sortable(opts);
+		$('.col',demo).sortable(opts2);
 	};
 	function resizeInit(rows){
-		console.log('drag init')
 		$.each(rows,function(){
 			if(!$(this).data('resize')){
 				var row=$(this).addClass('resizable'),
@@ -180,7 +197,7 @@ $(function(){
 						drag.iqlDrag({
 							ready:function(opts){
 								opts.max=parseInt(drag.css('left'))+nextCol.width(),
-								opts.min=((len)?parseInt(prev.css('left')):0);
+								opts.min=(len)?parseInt(prev.css('left')):0;
 							},
 							upCall:function(o,l,max,min){
 								o.css('left',(l/rWidth*100).toFixed(1)+'%');
@@ -198,6 +215,7 @@ $(function(){
 		})
 	};
 	function formCreate(styles){
+		return styles[0];
 	};
 	function setId(){};
 	//排序初始化
@@ -218,7 +236,13 @@ $(function(){
 				connectWith: '.col',
 				handle:'.drag',
 				start: function(e,t) {(sort===0) && (sort++)},
-				stop: function(e,t) {sort--;drag || htmlRec(); }
+				stop: function(e,t) {
+					sort--;
+					if(!drag){
+						reSlide(t.item.eq(0),1);
+						htmlRec();
+					} 
+				}
 			});
 			resizeInit($('.row',demo));
 			t.helper.attr('id','idname')
@@ -229,8 +253,8 @@ $(function(){
 		helper: 'clone',
 		opacity: .5,
 		start: function(e,t) {drag++},
-		drag: function(e,t) {t.helper.width(400)},
-		stop: function(e,t) {drag--;htmlRec();console.log(t);t.helper.attr('id','idname')}
+		drag: function(e,t) {t.helper.width(400);},
+		stop: function(e,t) {drag--;htmlRec();}
 	});
 	$('.sidebar-nav .wdg').draggable({
 		connectToSortable: '.col',
@@ -254,24 +278,23 @@ $(function(){
 	})
 	.on('click','.edit',function(e) {
 		e.preventDefault();
-		var p=$(this).parent().parent(),
-		type=(p.hasClass('box'))?'block':'';
+		var p=$(this).parent().parent(),type=p.data('type');
 		$('.modals').fadeIn(200, function() {
-			var layer=$('.modal',this);
+			var layer=$('.edit-layer',this);
+			$('table',layer).html(formCreate(Data[type]['css']))
 			layer.css({left:($(window).width()-layer.width())/2})
 			.on('click',function(e){
 				e.preventDefault();
 				$(e.target).hasClass('close') || e.stopPropagation();
 			}).fadeIn(100);
 		});
-
 	})
+	$(".color-picker").cxColor();
 	$('.modals').on('click',function() {
 		$(this).fadeOut(100, function() {
-			$(this).find('.modal').hide();
+			$(this).find('.edit-layer').hide();
 		});
 	});
-
 	$('.edit .demo')
 		.on('mouseover',selector,function(e){
 			e.stopPropagation();
@@ -312,7 +335,9 @@ $(function(){
 		if((id==='back') && (data.count!==0)){
 			data.count-- ;
 		}else{
-			if((id==='forward') && (data.count<(data.step.length-1))){data.count++}
+			if((id==='forward') && (data.count<(data.step.length-1))){data.count++}else{
+				return false;
+			}
 		};
 		$('.demo').html(data.step[data.count]);
 
