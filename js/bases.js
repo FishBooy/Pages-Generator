@@ -1,17 +1,19 @@
 /*=================可编辑样式====================*/
 var Data={
-	head:{
-		css:['align','background','border','font','height','width']
-	},
-	paragraph:{
-		css:['align','background','border','font','height','width']		
-	},
-	list:{
-		css:['background','border','font','height','','width']
-	},
-	img:{
-		css:['align','border','height','width']
-	},	
+	type:{
+		head:{
+			css:['size','background','border','text']
+		},
+		paragraph:{
+			css:['size','background','border','text']		
+		},
+		list:{
+			css:['size','background','border','text']
+		},
+		image:{
+			css:['size','background','border']
+		}
+	}	
 };
 
 // function(cssArr){
@@ -214,9 +216,6 @@ $(function(){
 			}
 		})
 	};
-	function formCreate(styles){
-		return styles[0];
-	};
 	function setId(){};
 	//排序初始化
 	initContainer();
@@ -280,15 +279,19 @@ $(function(){
 		e.preventDefault();
 		var p=$(this).parent().parent(),type=p.data('type');
 		$('.modals').fadeIn(200, function() {
-			var layer=$('.edit-layer',this);
-			$('table',layer).html(formCreate(Data[type]['css']))
+			var layer=$('.edit-layer',this),
+				css=Data['type'][type]['css'].join(','),trs=$('tr',layer).removeClass('show'),len=trs.length-1,i;
+				for(i=0;i<len;i++){
+					if(css.indexOf(trs[i].className)===-1){trs.eq(i).addClass('show')}
+				}
 			layer.css({left:($(window).width()-layer.width())/2})
 			.on('click',function(e){
 				e.preventDefault();
 				$(e.target).hasClass('close') || e.stopPropagation();
 			}).fadeIn(100);
 		});
-	})
+	});
+
 	$(".color-picker").cxColor();
 	$('.modals').on('click',function() {
 		$(this).fadeOut(100, function() {
