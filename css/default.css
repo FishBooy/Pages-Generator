@@ -10,6 +10,8 @@ p,li{line-height: 24px;font-size: 14px;color: #555;}
 p{padding: 5px;text-indent: 2em;}
 ul{padding: 5px;}
 ul li{list-style: inside;}
+ul li a{color: #444;}
+ul li a:hover{text-decoration: underline;}
 
 .row:after{content: '.';visibility: hidden;display: block;clear: both;height: 0;}
 .row{}
