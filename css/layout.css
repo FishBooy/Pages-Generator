@@ -6,8 +6,8 @@ body{background: #f1f1f1;}
 .file-btns .logo-sec a{font-size: 18px;font-family: '微软雅黑';font-weight:bold;color: #fff;line-height: 34px;text-indent: -999em; }
 .file-btns ul{float: right;padding: 0;}
 .file-btns li{display: block;float: left;}
-.file-btns li a{display: block;color: #e1e2e5;padding: 5px 8px;border-left: #3f4248 1px solid;border-right: #32353b 1px solid;font-size: 14px;}
-.file-btns li a:hover{background: #25282d;border-left-color: #26282d;border-right-color: #26282d;color: #fff;}
+.file-btns li a{display: block;color: #e1e2e5;padding: 5px 8px;border-left: #3f4248 1px solid;border-right: #32353b 1px solid;font-size: 14px;font-family: '微软雅黑';}
+.file-btns li a:hover{background: #25282d;border-left-color: #26282d;border-right-color: #26282d;color: #fff;text-decoration: none;}
 .file-btns li a.active{background: #f1f1f1;color: #26282d;font-weight: bold;}
 
 /*===========*/
@@ -75,6 +75,7 @@ background:url(../img/icons.gif) 18px 0 no-repeat;}
 .demo .lyrow .ctrl-btns{z-index: 1000;}.demo .box .ctrl-btns,.demo .wdg .ctrl-btns{z-index: 999;}
 .demo .preview{display: none;}
 .demo .view img{width: 200px;height: 100px;}
+.source-preview .demo .show {display: none;}
 
 
 

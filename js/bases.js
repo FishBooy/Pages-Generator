@@ -147,11 +147,12 @@ $(function(){
 		sort=0,
 		selector='.lyrow,.box,.wdg',
 		body=$('body').addClass('edit');
-	function htmlRec(d){ 
+	function htmlRec(del){ 
 		var html=demo.html(),
 			data=htmlData;
 		data.count++;
-		if(d){ data.step.push(html);heightChe();return false;}
+
+		if(del){ data.step.push(html);heightChe();return false;}
 		!drag && !sort && data.step.push(html);
 		heightChe();
 	};
@@ -216,7 +217,9 @@ $(function(){
 			}
 		})
 	};
-	function setId(){};
+	function setId(eleName){
+		// $.each($('.'+''))
+	};
 	//排序初始化
 	initContainer();
 	//左侧拖拽&&右侧排序
@@ -224,11 +227,12 @@ $(function(){
 		connectToSortable: '.demo',
 		helper: 'clone',
 		opacity: .5,
-		start: function(e,t) {drag++},
+		start: function(e,t) {drag++;},
 		drag: function(e,t) {t.helper.width(400);},
 		stop: function(e,t) {
 			drag--;
-			htmlRec();
+			t.helper.prevObject['context'].setAttribute('id','23423')
+			htmlRec(0,$(t.helper['context']));
 			var cols=$('.col',demo);
 			cols.sortable({
 				opacity: .5,
@@ -292,7 +296,7 @@ $(function(){
 		});
 	});
 
-	$(".color-picker").cxColor();
+	$(".color-picker").bigColorpicker(function(el,color){$(el).val(color);});
 	$('.modals').on('click',function() {
 		$(this).fadeOut(100, function() {
 			$(this).find('.edit-layer').hide();
