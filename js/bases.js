@@ -11,7 +11,7 @@ var Data={
 			css:['size','background','border','text']
 		},
 		image:{
-			css:['size','background','border']
+			css:['size','border']
 		}
 	}	
 };
@@ -45,13 +45,25 @@ $(function(){
 		if (supportstorage()) {
 			htmlData = JSON.parse(localStorage.getItem("htmlData"));
 			if(!htmlData){
-				htmlData={count:0,step:[demo.html()]};
+				htmlData={count:0,step:[demo.html()],css:{}};
 				return false;
 			};
 			if(!htmlData.count){return false;}
 			demo.html(htmlData.step[htmlData.count]);
-			clearResizeHtml()
+			clearResizeHtml();
+			// buildCss(htmlData.css);
 		}
+	};
+	function buildCss(css){
+		var p,a,styleHtml,cssHtml='';
+		if(!css){return false;}
+		for(p in css){
+			styleHtml='';
+			for(a in css[p]){
+				styleHtml+=a+':'+css[p][a]+';'
+			}
+			cssHtml+=(p+'{'+styleHtml+'}');
+		};
 	};
 	function reBuild(e){
 		var html='<div><ul>'+$('ul',e).html()+'</ul></div>',
@@ -147,11 +159,16 @@ $(function(){
 		sort=0,
 		selector='.lyrow,.box,.wdg',
 		body=$('body').addClass('edit');
-	function htmlRec(del){ 
+	function setId(eleName){
+		$.each($('.'+eleName,demo),function(k, v){
+			if(!$(v).attr('id')){$(v).attr('id',eleName+(new Date()).getTime())}
+		})
+	};
+	function htmlRec(del,eleName){
+		eleName && setId(eleName);
 		var html=demo.html(),
 			data=htmlData;
 		data.count++;
-
 		if(del){ data.step.push(html);heightChe();return false;}
 		!drag && !sort && data.step.push(html);
 		heightChe();
@@ -166,10 +183,7 @@ $(function(){
 		},opts2=$.extend({},opts,{
 			stop: function(e,t) {
 				sort--;
-				if(!drag){
-					console.log('sort stop')
-					htmlRec();
-				}
+				if(!drag){htmlRec();}
 			}
 		});
 		
@@ -217,9 +231,6 @@ $(function(){
 			}
 		})
 	};
-	function setId(eleName){
-		// $.each($('.'+''))
-	};
 	//排序初始化
 	initContainer();
 	//左侧拖拽&&右侧排序
@@ -231,8 +242,7 @@ $(function(){
 		drag: function(e,t) {t.helper.width(400);},
 		stop: function(e,t) {
 			drag--;
-			t.helper.prevObject['context'].setAttribute('id','23423')
-			htmlRec(0,$(t.helper['context']));
+			htmlRec(0,'lyrow');
 			var cols=$('.col',demo);
 			cols.sortable({
 				opacity: .5,
@@ -257,7 +267,7 @@ $(function(){
 		opacity: .5,
 		start: function(e,t) {drag++},
 		drag: function(e,t) {t.helper.width(400);},
-		stop: function(e,t) {drag--;htmlRec();}
+		stop: function(e,t) {drag--;htmlRec(0,'box');}
 	});
 	$('.sidebar-nav .wdg').draggable({
 		connectToSortable: '.col',
@@ -268,7 +278,7 @@ $(function(){
 		stop: function() {
 			reSlide();
 			drag--;
-			htmlRec();
+			htmlRec(0,'wdg');
 		}
 	});
 	//按钮组件相关
@@ -281,18 +291,41 @@ $(function(){
 	})
 	.on('click','.edit',function(e) {
 		e.preventDefault();
-		var p=$(this).parent().parent(),type=p.data('type');
+		var p=$(this).parent().parent(),
+			type=p.data('type'),
+			idName=p.attr('id');
+			console.log(idName)
 		$('.modals').fadeIn(200, function() {
 			var layer=$('.edit-layer',this),
-				css=Data['type'][type]['css'].join(','),trs=$('tr',layer).removeClass('show'),len=trs.length-1,i;
+				css=Data['type'][type]['css'].join(','),trs=$('tr',layer).removeClass('hidden'),len=trs.length-1,i;
 				for(i=0;i<len;i++){
-					if(css.indexOf(trs[i].className)===-1){trs.eq(i).addClass('show')}
+					if(css.indexOf(trs[i].className)===-1){trs.eq(i).addClass('hidden')}
 				}
 			layer.css({left:($(window).width()-layer.width())/2})
 			.on('click',function(e){
 				e.preventDefault();
 				$(e.target).hasClass('close') || e.stopPropagation();
 			}).fadeIn(100);
+			$('.css-edit button',layer).click(function(e){
+				e.preventDefault();
+				var eles=$('input,select',$('.css-edit form')),
+					len=eles.length,
+					cssStr='',
+					Id='#'+idName,
+					cssTxt=$('#css-wrap').text();
+				for(var i=0;i<len;i++){
+					var t=eles.eq(i);
+					if(!!t.val() && (t.attr('type')!='submit')){cssStr+=t.attr('name')+':'+t.val()+';';}
+				};
+				cssStr=Id+'{'+cssStr+'}\n';
+				console.log(Id)
+				if(cssTxt.indexOf(Id)!==-1){alert('');cssTxt.replace(new RegExp(Id+'\\{\\S*\\n','g'),cssStr);}else{
+					cssTxt+=cssStr;
+				};
+				$('#css-wrap').text(cssTxt);
+				
+				return false;
+			});
 		});
 	});
 
@@ -388,16 +421,6 @@ $(function(){
 		saveLayout();
 		console.log('保存成功')
 	});
-
-
-
-
-
-
-
-
-
-
 
 
 })
