@@ -298,14 +298,17 @@ $(function(){
 		$('.modals').fadeIn(200, function() {
 			var layer=$('.edit-layer',this),
 				css=Data['type'][type]['css'].join(','),trs=$('tr',layer).removeClass('hidden'),len=trs.length-1,i;
-				for(i=0;i<len;i++){
-					if(css.indexOf(trs[i].className)===-1){trs.eq(i).addClass('hidden')}
-				}
-			layer.css({left:($(window).width()-layer.width())/2})
+			for(i=0;i<len;i++){
+				if(css.indexOf(trs[i].className)===-1){trs.eq(i).addClass('hidden')}
+			};
+			
+			layer
+			.css({left:($(window).width()-layer.width())/2})
 			.on('click',function(e){
 				e.preventDefault();
 				$(e.target).hasClass('close') || e.stopPropagation();
 			}).fadeIn(100);
+
 			$('.css-edit button',layer).click(function(e){
 				e.preventDefault();
 				var eles=$('input,select',$('.css-edit form')),
@@ -331,6 +334,7 @@ $(function(){
 
 	$(".color-picker").bigColorpicker(function(el,color){$(el).val(color);});
 	$('.modals').on('click',function() {
+		alert('')
 		$(this).fadeOut(100, function() {
 			$(this).find('.edit-layer').hide();
 		});
