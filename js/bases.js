@@ -1,18 +1,11 @@
 /*=================可编辑样式====================*/
 var Data={
 	type:{
-		head:{
-			css:['size','background','border','text']
-		},
-		paragraph:{
-			css:['size','background','border','text']		
-		},
-		list:{
-			css:['size','background','border','text']
-		},
-		image:{
-			css:['size','border']
-		}
+		head:{css:['size','background','border','text']},
+		paragraph:{css:['size','background','border','text']},
+		list:{css:['size','background','border','text']},
+		image:{css:['size','border']},
+		gallery:{css:[]}
 	}	
 };
 
@@ -45,25 +38,14 @@ $(function(){
 		if (supportstorage()) {
 			htmlData = JSON.parse(localStorage.getItem("htmlData"));
 			if(!htmlData){
-				htmlData={count:0,step:[demo.html()],css:{}};
+				htmlData={count:0,step:[demo.html()],css:''};
 				return false;
 			};
 			if(!htmlData.count){return false;}
 			demo.html(htmlData.step[htmlData.count]);
 			clearResizeHtml();
-			// buildCss(htmlData.css);
+			$('#css-wrap').text(htmlData.css)
 		}
-	};
-	function buildCss(css){
-		var p,a,styleHtml,cssHtml='';
-		if(!css){return false;}
-		for(p in css){
-			styleHtml='';
-			for(a in css[p]){
-				styleHtml+=a+':'+css[p][a]+';'
-			}
-			cssHtml+=(p+'{'+styleHtml+'}');
-		};
 	};
 	function reBuild(e){
 		var html='<div><ul>'+$('ul',e).html()+'</ul></div>',
@@ -158,10 +140,12 @@ $(function(){
 	var drag=0,
 		sort=0,
 		selector='.lyrow,.box,.wdg',
-		body=$('body').addClass('edit');
+		body=$('body').addClass('edit'),
+		idNames=[];
 	function setId(eleName){
 		$.each($('.'+eleName,demo),function(k, v){
-			if(!$(v).attr('id')){$(v).attr('id',eleName+(new Date()).getTime())}
+			var child=$('.view',v).children();
+			if(!child.attr('id')){child.attr('id',eleName+(new Date()).getTime())}
 		})
 	};
 	function htmlRec(del,eleName){
@@ -282,63 +266,67 @@ $(function(){
 		}
 	});
 	//按钮组件相关
+	function fadeOut(){
+		$('.modals').fadeOut(100, function() {
+			$(this).find('.edit-layer').hide();
+		});
+	}
 	$('.tabs').tinyTab();
 	demo
 	.on('click','.remove',function(e) {
 		e.preventDefault();
 		$(this).parent().parent().remove();
 		htmlRec(true);
+		idNames.push($(this).parent().next().children().attr('id'));
 	})
 	.on('click','.edit',function(e) {
 		e.preventDefault();
 		var p=$(this).parent().parent(),
 			type=p.data('type'),
-			idName=p.attr('id');
-			console.log(idName)
+			idName=$(this).parent().next().children().addClass('editing').attr('id');
 		$('.modals').fadeIn(200, function() {
 			var layer=$('.edit-layer',this),
 				css=Data['type'][type]['css'].join(','),trs=$('tr',layer).removeClass('hidden'),len=trs.length-1,i;
 			for(i=0;i<len;i++){
 				if(css.indexOf(trs[i].className)===-1){trs.eq(i).addClass('hidden')}
 			};
-			
-			layer
-			.css({left:($(window).width()-layer.width())/2})
-			.on('click',function(e){
-				e.preventDefault();
-				$(e.target).hasClass('close') || e.stopPropagation();
-			}).fadeIn(100);
-
-			$('.css-edit button',layer).click(function(e){
-				e.preventDefault();
-				var eles=$('input,select',$('.css-edit form')),
-					len=eles.length,
-					cssStr='',
-					Id='#'+idName,
-					cssTxt=$('#css-wrap').text();
-				for(var i=0;i<len;i++){
-					var t=eles.eq(i);
-					if(!!t.val() && (t.attr('type')!='submit')){cssStr+=t.attr('name')+':'+t.val()+';';}
-				};
-				cssStr=Id+'{'+cssStr+'}\n';
-				console.log(Id)
-				if(cssTxt.indexOf(Id)!==-1){alert('');cssTxt.replace(new RegExp(Id+'\\{\\S*\\n','g'),cssStr);}else{
-					cssTxt+=cssStr;
-				};
-				$('#css-wrap').text(cssTxt);
-				
-				return false;
-			});
+			layer.css({left:($(window).width()-layer.width())/2}).fadeIn(100);;
 		});
 	});
-
+	$('.edit-layer .close').click(function(e){
+		e.preventDefault();fadeOut();return false;
+	})
+	$('.css-edit button').click(function(e){
+		e.preventDefault();
+		var eles=$('input,select',$('.css-edit form')),
+			len=eles.length,
+			cssStr='',
+			editing=$('.editing'),
+			Id='#'+editing.attr('id'),
+			cssTxt=$('#css-wrap').text();
+		for(var i=0;i<len;i++){
+			var t=eles.eq(i);
+			if(!!t.val() && (t.attr('type')!='submit')){
+				var px=(t.next().text()=='px')? 'px':'';
+				cssStr+=t.attr('name')+':'+t.val()+px+';';
+			}
+		};
+		if(cssStr){
+			cssStr=Id+'{'+cssStr+'}\n';
+			if(cssTxt.indexOf(Id)!==-1){
+				var pattern=Id+'\\S*\\n';
+				cssTxt=cssTxt.replace(new RegExp(pattern),cssStr);
+			}else{
+				cssTxt+=cssStr;
+			};
+			$('#css-wrap').text(cssTxt);
+			editing.removeClass('editing');			
+		};
+		fadeOut();
+		return false;
+	});
 	$(".color-picker").bigColorpicker(function(el,color){$(el).val(color);});
-	$('.modals').on('click',function() {
-		alert('')
-		$(this).fadeOut(100, function() {
-			$(this).find('.edit-layer').hide();
-		});
-	});
+
 	$('.edit .demo')
 		.on('mouseover',selector,function(e){
 			e.stopPropagation();
@@ -389,15 +377,18 @@ $(function(){
 		resizeInit($('.row',demo));
 		reSlide(demo,1);	
 	};
+	function getCss(){};
 	function saveLayout(){
 		var data = htmlData,
 			len=data.step.length,
 			count=data.count,
 			n;
+			console.log(len,count)
 		if (len>count) {
 			n=len-count;
 			data.step.splice(count+1,len-count+1)
-		}
+		};
+		data['css']=$('#css-wrap').text();
 		if (supportstorage()) {
 			localStorage.setItem("htmlData",JSON.stringify(data));
 		}

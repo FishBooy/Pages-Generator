@@ -170,7 +170,7 @@
 			}else{
 				//预加载图片
 			     var bgmage = new Image();
-			     bgmage.src = "../images/big_bgcolor.jpg";
+			     bgmage.src = "img/big_bgcolor.jpg";
 			     //初始化为默认样式
 				$("#bigSections").height(134).width(222).addClass("bigpicker-bgimage").empty();
 				$("#bigpicker").width(227).height(163);

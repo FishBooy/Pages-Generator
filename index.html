@@ -171,7 +171,7 @@
 					<a href="" class="widgets"><span>组件</span></a>
 					<ul class="sub-nav">
 						<li>
-							<div class="wdg">
+							<div class="wdg" data-type="gallery">
 								<span class="preview">幻灯</span>
 								<div class="ctrl-btns">
 									<span class="edit">编辑</span>
@@ -195,7 +195,7 @@
 							</div>
 						</li>
 						<li class="last">
-							<div class="wdg">
+							<div class="wdg" data-type="other">
 								<span class="preview">其他</span>
 								<div class="ctrl-btns">
 									<span class="edit">编辑</span>
@@ -234,6 +234,9 @@
 				<div class="tc css-edit">
 					<form action="">
 						<table>
+							<tr>
+								<td colspan="2">不可编辑</td>
+							</tr>
 							<tr class="size">
 								<td>尺寸:</td>
 								<td>
@@ -254,6 +257,7 @@
 										<label for="">样式:</label>
 										<p>
 											<select name="border-style" id="">
+												<option value=""></option>
 												<option value="solid">实线</option>
 												<option value="dashed">虚线</option>
 												<option value="dotted">点线</option>
@@ -272,7 +276,8 @@
 									<div class="float">
 										<label for="">样式:</label>
 										<p>
-											<select name="text-style" id="">
+											<select name="font-style" id="">
+												<option value=""></option>
 												<option value="italic">普通</option>
 												<option value="italic">斜体</option>
 											</select>
@@ -282,6 +287,7 @@
 										<label for="">对齐:</label>
 										<p>
 											<select name="text-align" id="">
+												<option value=""></option>
 												<option value="left">左对齐</option>
 												<option value="center">中间对齐</option>
 												<option value="right">右对齐</option>
@@ -292,6 +298,7 @@
 										<label for="">粗细:</label>
 										<p>
 											<select name="font-weight" id="">
+												<option value=""></option>
 												<option value="normal">普通</option>
 												<option value="bold">加粗</option>
 												<option value="bolder">特粗</option>
@@ -301,7 +308,7 @@
 								</td>
 							</tr>
 							<tr>
-								<td colspan="2" class="submit"><button type="submit" name="submit">保存</button></td>
+								<td colspan="2" class="submit"><button type="submit" name="submit" class="submitted">保存</button></td>
 							</tr>
 						</table>
 					</form>
